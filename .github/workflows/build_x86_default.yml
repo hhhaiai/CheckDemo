@@ -15,8 +15,6 @@ jobs:
     strategy:
       matrix:
           # api-level_x86_default: [15, 16, 17, 18, 21, 22, 23, 24, 25, 26, 27, 28, 29 ]
-          # target_x86_default: [default]
-          # arch_x86_default: [x86]
           api-level_x86_default: [29 ]
           target_x86_default: [default]
           arch_x86_default: [x86]
@@ -159,7 +157,7 @@ jobs:
             # adb push framework.jar /sdcard/
             # adb push monkey.jar /sdcard/
             # adb shell chmod -R 777 /sdcard/
-            # adb shell CLASSPATH=/sdcard/monkey.jar:/sdcard/framework.jar exec app_process /system/bin tv.panda.test.monkey.Monkey -p com.device --uiautomatormix --running-minutes 3 -v -v
+            ## adb shell CLASSPATH=/sdcard/monkey.jar:/sdcard/framework.jar exec app_process /system/bin tv.panda.test.monkey.Monkey -p com.device --uiautomatormix --running-minutes 3 -v -v
             # adb shell CLASSPATH=/sdcard/monkey.jar:/sdcard/framework.jar exec app_process /system/bin tv.panda.test.monkey.Monkey -p cn.analysys.casedemo --uiautomatormix --running-minutes 3 -v -v
 
             wget https://raw.githubusercontent.com/TestJken66/Fastbot_Android/main/fastbot-thirdpart.jar
@@ -180,7 +178,7 @@ jobs:
             adb shell chmod -R 777 /sdcard/
             adb shell chmod -R 777 /data/local/tmp/*
             #adb shell CLASSPATH=/sdcard/monkeyq.jar:/sdcard/framework.jar:/sdcard/fastbot-thirdpart.jar exec app_process /system/bin com.android.commands.monkey.Monkey -p com.device --agent reuseq --bugreport --output-directory /sdcard/mbugs --running-minutes 3 --throttle 200 -v -v
-            adb shell CLASSPATH=/sdcard/monkeyq.jar:/sdcard/framework.jar:/sdcard/fastbot-thirdpart.jar exec app_process /system/bin com.android.commands.monkey.Monkey -p cn.analysys.casedemo --agent reuseq --bugreport --output-directory /sdcard/mbugs --running-minutes 3 --throttle 200 -v -v
+            adb shell CLASSPATH=/sdcard/monkeyq.jar:/sdcard/framework.jar:/sdcard/fastbot-thirdpart.jar exec app_process /system/bin com.android.commands.monkey.Monkey -p cn.analysys.casedemo --agent reuseq --bugreport --output-directory /sdcard/mbugs --running-minutes 3 --throttle 300 -v -v
             echo "。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。"
             echo "。。。。。。。。。。。。。。。。。。运行完毕了。。。。。。。。。。。。。。。。。。。"
             echo "。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。"
