@@ -185,7 +185,9 @@ jobs:
             # # 切换根目录
             # cd ../
             adb pull /sdcard/mbugs .
-            tar zcvf monkey_3_result_${{ matrix.api-level_x86_default }}-${{ matrix.target_x86_default }}-${{ matrix.arch_x86_default }}.tgz mbugs/
+            adb pull /sdcard/crash-dump.log .
+            adb pull /sdcard/oom-traces.log . 
+            tar zcvf monkey_3_result_${{ matrix.api-level_x86_default }}-${{ matrix.target_x86_default }}-${{ matrix.arch_x86_default }}.tgz mbugs/ /sdcard/crash-dump.log /sdcard/oom-traces.log
             echo "${{ matrix.api-level_x86_default }}-${{ matrix.target_x86_default }}-${{ matrix.arch_x86_default }} 运行完毕。。。。。。。。。"
             rm -rf ~/.android/avd/
 
