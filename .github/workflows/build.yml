@@ -155,7 +155,8 @@ jobs:
             tar zcvf ut_${{ matrix.api-level_x86_default }}-${{ matrix.target_x86_default }}-${{ matrix.arch_x86_default }}.tgz build/
             echo "==============clear module=============="
             rm -rf  ~/.android/avd/
-
+            echo "==============查看~/.android/avd/=============="
+            ls ~/.android/avd/
             echo "${{github.repository_owner}} will upload files"
             #######################################################################################################
             ######################################## upload files #################################################
