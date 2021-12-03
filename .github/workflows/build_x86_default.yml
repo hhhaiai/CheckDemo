@@ -153,33 +153,32 @@ jobs:
             adb install -r ./appdemo-debug.apk
             adb shell pm list package
 
-            wget https://raw.githubusercontent.com/zhangzhao4444/Maxim/master/framework.jar
-            wget https://raw.githubusercontent.com/zhangzhao4444/Maxim/master/monkey.jar
-            chmod -R 777 *
-            adb push framework.jar /sdcard/
-            adb push monkey.jar /sdcard/
-            adb shell chmod -R 777 /sdcard/
-            adb shell CLASSPATH=/sdcard/monkey.jar:/sdcard/framework.jar exec app_process /system/bin tv.panda.test.monkey.Monkey -p com.device --uiautomatormix --running-minutes 3 -v -v
-
-            # wget https://raw.githubusercontent.com/TestJken66/Fastbot_Android/main/fastbot-thirdpart.jar
-            # wget https://raw.githubusercontent.com/TestJken66/Fastbot_Android/main/monkeyq.jar
-            # wget https://raw.githubusercontent.com/TestJken66/Fastbot_Android/main/framework.jar
-            # adb push framework.jar /sdcard
-            # adb push monkeyq.jar /sdcard
-            # adb push fastbot-thirdpart.jar /sdcard
-            # wget https://raw.githubusercontent.com/TestJken66/Fastbot_Android/main/libs/arm64-v8a/libfastbot_native.so -P libs/arm64-v8a/
-            # wget https://raw.githubusercontent.com/TestJken66/Fastbot_Android/main/libs/armeabi-v7a/libfastbot_native.so -P libs/armeabi-v7a/
-            # wget https://raw.githubusercontent.com/TestJken66/Fastbot_Android/main/libs/x86/libfastbot_native.so -P libs/x86/
-            # wget https://raw.githubusercontent.com/TestJken66/Fastbot_Android/main/libs/x86_64/libfastbot_native.so -P libs/x86_64/
+            # wget https://raw.githubusercontent.com/zhangzhao4444/Maxim/master/framework.jar
+            # wget https://raw.githubusercontent.com/zhangzhao4444/Maxim/master/monkey.jar
             # chmod -R 777 *
-
-            # adb push libs/arm64-v8a/ /data/local/tmp/
-            # adb push libs/armeabi-v7a/ /data/local/tmp/
-            # adb push libs/x86/ /data/local/tmp/
-            # adb push libs/x86_64/ /data/local/tmp/
+            # adb push framework.jar /sdcard/
+            # adb push monkey.jar /sdcard/
             # adb shell chmod -R 777 /sdcard/
-            # adb shell chmod -R 777 /data/local/tmp/*
-            # adb shell CLASSPATH=/sdcard/monkeyq.jar:/sdcard/framework.jar:/sdcard/fastbot-thirdpart.jar exec app_process /system/bin com.android.commands.monkey.Monkey -p com.device --agent reuseq --bugreport --output-directory /sdcard/mbugs --running-minutes 3 --throttle 80 -v -v
+            # adb shell CLASSPATH=/sdcard/monkey.jar:/sdcard/framework.jar exec app_process /system/bin tv.panda.test.monkey.Monkey -p com.device --uiautomatormix --running-minutes 3 -v -v
+
+            wget https://raw.githubusercontent.com/TestJken66/Fastbot_Android/main/fastbot-thirdpart.jar
+            wget https://raw.githubusercontent.com/TestJken66/Fastbot_Android/main/monkeyq.jar
+            wget https://raw.githubusercontent.com/TestJken66/Fastbot_Android/main/framework.jar
+            adb push framework.jar /sdcard
+            adb push monkeyq.jar /sdcard
+            adb push fastbot-thirdpart.jar /sdcard
+            wget https://raw.githubusercontent.com/TestJken66/Fastbot_Android/main/libs/arm64-v8a/libfastbot_native.so -P libs/arm64-v8a/
+            wget https://raw.githubusercontent.com/TestJken66/Fastbot_Android/main/libs/armeabi-v7a/libfastbot_native.so -P libs/armeabi-v7a/
+            wget https://raw.githubusercontent.com/TestJken66/Fastbot_Android/main/libs/x86/libfastbot_native.so -P libs/x86/
+            wget https://raw.githubusercontent.com/TestJken66/Fastbot_Android/main/libs/x86_64/libfastbot_native.so -P libs/x86_64/
+            chmod -R 777 *
+            adb push libs/arm64-v8a/ /data/local/tmp/
+            adb push libs/armeabi-v7a/ /data/local/tmp/
+            adb push libs/x86/ /data/local/tmp/
+            adb push libs/x86_64/ /data/local/tmp/
+            adb shell chmod -R 777 /sdcard/
+            adb shell chmod -R 777 /data/local/tmp/*
+            adb shell CLASSPATH=/sdcard/monkeyq.jar:/sdcard/framework.jar:/sdcard/fastbot-thirdpart.jar exec app_process /system/bin com.android.commands.monkey.Monkey -p com.device --agent reuseq --bugreport --output-directory /sdcard/mbugs --running-minutes 3 --throttle 200 -v -v
             echo "。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。"
             echo "。。。。。。。。。。。。。。。。。。运行完毕了。。。。。。。。。。。。。。。。。。。"
             echo "。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。"
