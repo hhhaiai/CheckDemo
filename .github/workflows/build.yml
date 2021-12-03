@@ -1,14 +1,16 @@
-name: pull_build
+name: pull_and_build
 
 on:
   push:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+  # schedule:
+  #   - cron: '0 */3 * * *'  #   分 时 日 月 周
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: macOS-11
     if: "!startsWith(github.event.head_commit.message, 'GitHubAction:')"
 
     steps:
@@ -51,9 +53,6 @@ jobs:
           bash syncSubmodule.sh
           chmod -R 777 *
           git config core.filemode false
-          # install tools
-          sudo apt-get update
-          sudo apt-get -y install unzip
           ./gradlew build
 
       # general file list
