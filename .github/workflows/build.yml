@@ -12,7 +12,10 @@ jobs:
   build:
     runs-on: macOS-11
     if: "!startsWith(github.event.head_commit.message, 'GitHubAction:')"
-
+    matrix:
+        api-level_x86_default: [15, 16, 17, 18, 21, 22, 23, 24, 25, 26, 27, 28, 29 ]
+        target_x86_default: [default]
+        arch_x86_default: [x86]
     steps:
       - uses: actions/checkout@v2
       - name: set up JDK 11
@@ -61,10 +64,6 @@ jobs:
           cd analysys-dev-sdk
           ./gradlew build
 
-      # general file list
-      # ./dev-sdk-debug.jar  ./dev-sdk-release.jar  
-      # ./casedemo-debug.apk ./updatecase-debug.apk ./appdemo-debug.apk
-      # ./tree.txt
       - name: copy result
         shell: bash
         continue-on-error: true
@@ -84,7 +83,6 @@ jobs:
         run: |
           echo "=================see 1 see================"
           cat ./build_result_tree.txt
-
 
       - name: test print info
         shell: bash
@@ -141,3 +139,41 @@ jobs:
           attachments: ./build_result_tree.txt, ./dev-sdk-debug.aar, ./dev-sdk-release.aar, ./casedemo-debug.apk, ./updatecase-debug.apk, ./appdemo-debug.apk
           #html_body: file://dev-sdk/build/reports/lint-results.html
           #convert_markdown: true
+
+      - name: run tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: ${{ matrix.api-level_x86_default }}
+          target: ${{ matrix.target_x86_default }}
+          arch: ${{ matrix.arch_x86_default }}
+          profile: Nexus 6
+          avd-name: ${{ matrix.api-level_x86_default }}-${{ matrix.target_x86_default }}-${{ matrix.arch_x86_default }}
+          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          script: |
+            ./gradlew connectedAndroidTest mergeAndroidReports
+            cd build
+            tar zcvf ut_${{ matrix.api-level_x86_default }}-${{ matrix.target_x86_default }}-${{ matrix.arch_x86_default }}.tgz build/
+            echo "==============clear module=============="
+            rm -rf  ~/.android/avd/
+
+            echo "${{github.repository_owner}} will upload files"
+            #######################################################################################################
+            ######################################## upload files #################################################
+            #######################################################################################################
+            file_name=ut_${{ matrix.api-level_x86_default }}-${{ matrix.target_x86_default }}-${{ matrix.arch_x86_default }}.tgz
+            wget  https://github.com/hhhaiai/uploadGithub/releases/download/v1.1/uploadGithubService-1.1-jar-with-dependencies.jar
+            dat=$(date "+%H%M%S")
+            tpn=${{ github.repository }}
+            pn=`echo $tpn | cut -d \/ -f 2`
+            us=${{github.repository_owner}}
+            # echo "project name: ${pn}"
+            today=$(date "+%Y%m%d")
+            upload_file_name="ci/$today/${pn}_${dat}_${file_name}"
+            chmod -R 777 *
+            echo "=================下载完成文件查看===================="
+            ls
+            # echo "==dat== $dat"
+            # echo "==dat== $upload_file_name"
+            # https://docs.github.com/cn/actions/learn-github-actions/contexts#github-context
+            # echo "===========================">>${file_name}
+            java -jar uploadGithubService-1.1-jar-with-dependencies.jar  -owner hhhaiai -repo Git_result -target-dir-full-name  $upload_file_name -native-file ${file_name}  -token ${{ secrets.GTOKEN }} -commit-messge  "GitHubAction: Build commit ${{ github.sha }}. Project: ${{ github.repository }} Job ${{ github.job }}, created by ${{ github.workflow }} " -commit-auther "UploadGithubService" -commit-email "sanbo.xyz@gmail.com"
