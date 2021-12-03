@@ -65,7 +65,7 @@ jobs:
       # ./dev-sdk-debug.jar  ./dev-sdk-release.jar  
       # ./casedemo-debug.apk ./updatecase-debug.apk ./appdemo-debug.apk
       # ./tree.txt
-      - name: prepare source
+      - name: copy result
         shell: bash
         continue-on-error: true
         run: |
