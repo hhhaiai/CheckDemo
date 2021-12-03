@@ -186,11 +186,15 @@ jobs:
             # cd ../
             adb pull /sdcard/mbugs .
             adb pull /sdcard/crash-dump.log .
-            adb pull /sdcard/oom-traces.log . 
-            tar zcvf monkey_3_result_${{ matrix.api-level_x86_default }}-${{ matrix.target_x86_default }}-${{ matrix.arch_x86_default }}.tgz mbugs/ /sdcard/crash-dump.log /sdcard/oom-traces.log
+            adb pull /sdcard/oom-traces.log .
+            
             echo "${{ matrix.api-level_x86_default }}-${{ matrix.target_x86_default }}-${{ matrix.arch_x86_default }} 运行完毕。。。。。。。。。"
             rm -rf ~/.android/avd/
-
+      - name: ypload
+        shell: bash
+        continue-on-error: true
+        run: |
+            tar zcvf monkey_3_result_${{ matrix.api-level_x86_default }}-${{ matrix.target_x86_default }}-${{ matrix.arch_x86_default }}.tgz mbugs/ /sdcard/crash-dump.log /sdcard/oom-traces.log
             echo "${{github.repository_owner}} will upload files"
             #######################################################################################################
             ######################################## upload files #################################################
