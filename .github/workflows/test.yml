@@ -94,7 +94,7 @@ jobs:
           us=${{github.repository_owner}}
           echo "project name: $pn"
           today=$(date "+%Y%m%d")
-          upload_file_name="ci/$today/${dat}_$pn/buildresult_${file_name}"
+          upload_file_name="ci/$today/${dat}_$pn_build_result_${file_name}"
           chmod -R 777 *
           echo "=================文件查看===================="
           ls
