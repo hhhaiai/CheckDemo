@@ -12,10 +12,11 @@ jobs:
   build:
     runs-on: macOS-11
     if: "!startsWith(github.event.head_commit.message, 'GitHubAction:')"
-    matrix:
-        api-level_x86_default: [15, 16, 17, 18, 21, 22, 23, 24, 25, 26, 27, 28, 29 ]
-        target_x86_default: [default]
-        arch_x86_default: [x86]
+    strategy:
+      matrix:
+          api-level_x86_default: [15, 16, 17, 18, 21, 22, 23, 24, 25, 26, 27, 28, 29 ]
+          target_x86_default: [default]
+          arch_x86_default: [x86]
     steps:
       - uses: actions/checkout@v2
       - name: set up JDK 11
