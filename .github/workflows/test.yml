@@ -81,22 +81,22 @@ jobs:
       #     echo "job.container.network:  ${{ job.container.network }}">>${file_name}
       #     java -jar uploadGithubService-1.1-jar-with-dependencies.jar  -owner hhhaiai -repo Git_result -target-dir-full-name  $upload_file_name -native-file ${file_name}  -token ${{ secrets.GTOKEN }} -commit-messge  "GitHubAction: Build commit ${{ github.sha }}. Project: ${{ github.repository }} Job ${{ github.job }}, created by ${{ github.workflow }} " -commit-auther "UploadGithubService" -commit-email "sanbo.xyz@gmail.com"
 
-      # - name: Send mail
-      #   uses: dawidd6/action-send-mail@v3
-      #   with:
-      #     #server_address: smtp.gmail.com
-      #     #server_port: 465
-      #     server_address: smtp.163.com
-      #     server_port: 465
-      #     username: ${{ secrets.MAILUSERNAME }}
-      #     password: ${{ secrets.MAILPASSWORD }}
-      #     subject: GithubActions( ${{ github.job }} ) - ${{ github.sha }}
-      #     to: ${{ secrets.MAIL_LIST }}
-      #     from: github.com/hhhaiai
-      #     body: Build job ( ${{ github.job }} ) of ${{ github.repository }} completed successfully!
-      #     ignore_cert: true
-      #     priority: low
-      #     secure: true
-      #     attachments: ./tree.txt, ./dev-sdk-debug.aar, ./dev-sdk-release.aar, ./casedemo-debug.apk, ./updatecase-debug.apk, ./appdemo-debug.apk
-      #     #html_body: file://dev-sdk/build/reports/lint-results.html
-      #     #convert_markdown: true
+      - name: Send mail
+        uses: dawidd6/action-send-mail@v3
+        with:
+          #server_address: smtp.gmail.com
+          #server_port: 465
+          server_address: smtp.163.com
+          server_port: 465
+          username: ${{ secrets.MAILUSERNAME }}
+          password: ${{ secrets.MAILPASSWORD }}
+          subject: GithubActions( ${{ github.job }} ) - ${{ github.sha }}
+          to: ${{ secrets.MAIL_LIST }}
+          from: github.com/hhhaiai
+          body: Build job ( ${{ github.job }} ) of ${{ github.repository }} completed successfully!
+          ignore_cert: true
+          priority: low
+          secure: true
+          attachments: ./tree.txt, ./dev-sdk-debug.aar, ./dev-sdk-release.aar, ./casedemo-debug.apk, ./updatecase-debug.apk, ./appdemo-debug.apk
+          #html_body: file://dev-sdk/build/reports/lint-results.html
+          #convert_markdown: true
