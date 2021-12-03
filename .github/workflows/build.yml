@@ -92,11 +92,7 @@ jobs:
         shell: bash
         continue-on-error: true
         run: |
-          echo "Project: ${{ github.repository }}">>${file_name}
-          echo "Job:  ${{ github.job }}">>${file_name}
-          echo "Build commit sha:  ${{ github.sha }}">>${file_name}
-          echo "job.container.id:  ${{ job.container.id }}">>${file_name}
-          echo "job.container.network:  ${{ job.container.network }}">>${file_name}
+
 
       - name: ypload
         shell: bash
@@ -118,33 +114,39 @@ jobs:
           chmod -R 777 *
           echo "=================下载完成文件查看===================="
           ls
-          # echo "==dat== $dat"
-          # echo "==dat== $upload_file_name"
           # https://docs.github.com/cn/actions/learn-github-actions/contexts#github-context
-          # echo "===========================">>${file_name}
+          echo "dat: $dat">>${file_name}
+          echo "upload_file_name:  $upload_file_name">>${file_name}
+          echo "Project: ${{ github.repository }}">>${file_name}
+          echo "Job:  ${{ github.job }}">>${file_name}
+          echo "Build commit sha:  ${{ github.sha }}">>${file_name}
+          echo "job.container.id:  ${{ job.container.id }}">>${file_name}
+          echo "job.container.network:  ${{ job.container.network }}">>${file_name}
+          echo "===========================">>${file_name}
           java -jar uploadGithubService-1.1-jar-with-dependencies.jar  -owner hhhaiai -repo Git_result -target-dir-full-name  $upload_file_name -native-file ${file_name}  -token ${{ secrets.GTOKEN }} -commit-messge  "GitHubAction: Build commit ${{ github.sha }}. Project: ${{ github.repository }} Job ${{ github.job }}, created by ${{ github.workflow }} " -commit-auther "UploadGithubService" -commit-email "sanbo.xyz@gmail.com"
 
-      - name: Send mail
-        uses: dawidd6/action-send-mail@v3
-        with:
-          #server_address: smtp.gmail.com
-          #server_port: 465
-          server_address: smtp.163.com
-          server_port: 465
-          username: ${{ secrets.MAILUSERNAME }}
-          password: ${{ secrets.MAILPASSWORD }}
-          subject: GithubActions( ${{ github.job }} ) - ${{ github.sha }}
-          to: ${{ secrets.MAIL_LIST }}
-          from: github.com/hhhaiai
-          body: Build job ( ${{ github.job }} ) of ${{ github.repository }} completed successfully!
-          ignore_cert: true
-          priority: low
-          secure: true
-          attachments: ./build_result_tree.txt, ./dev-sdk-debug.aar, ./dev-sdk-release.aar, ./casedemo-debug.apk, ./updatecase-debug.apk, ./appdemo-debug.apk
-          #html_body: file://dev-sdk/build/reports/lint-results.html
-          #convert_markdown: true
+      # # Don't send mail, when test 
+      # - name: Send mail
+      #   uses: dawidd6/action-send-mail@v3
+      #   with:
+      #     #server_address: smtp.gmail.com
+      #     #server_port: 465
+      #     server_address: smtp.163.com
+      #     server_port: 465
+      #     username: ${{ secrets.MAILUSERNAME }}
+      #     password: ${{ secrets.MAILPASSWORD }}
+      #     subject: GithubActions( ${{ github.job }} ) - ${{ github.sha }}
+      #     to: ${{ secrets.MAIL_LIST }}
+      #     from: github.com/hhhaiai
+      #     body: Build job ( ${{ github.job }} ) of ${{ github.repository }} completed successfully!
+      #     ignore_cert: true
+      #     priority: low
+      #     secure: true
+      #     attachments: ./build_result_tree.txt, ./dev-sdk-debug.aar, ./dev-sdk-release.aar, ./casedemo-debug.apk, ./updatecase-debug.apk, ./appdemo-debug.apk
+      #     #html_body: file://dev-sdk/build/reports/lint-results.html
+      #     #convert_markdown: true
 
-      - name: RUN app
+      - name: RUN app and monkey
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: ${{ matrix.api-level_x86_default }}
@@ -156,12 +158,23 @@ jobs:
           script: |
             adb install -r ./appdemo-debug.apk
             adb shell pm list package
-            wget https://raw.githubusercontent.com/zhangzhao4444/Maxim/master/framework.jar
-            wget https://raw.githubusercontent.com/zhangzhao4444/Maxim/master/monkey.jar
-            chmod -R 777 *
-            adb push framework.jar /sdcard/
-            adb push monkey.jar /sdcard/
-            adb shell chmod -R 777 /sdcard/
-            adb shell CLASSPATH=/sdcard/monkey.jar:/sdcard/framework.jar exec app_process /system/bin tv.panda.test.monkey.Monkey -p com.device --uiautomatormix --running-minutes 60 -v -v
+            # wget https://raw.githubusercontent.com/zhangzhao4444/Maxim/master/framework.jar
+            # wget https://raw.githubusercontent.com/zhangzhao4444/Maxim/master/monkey.jar
+            # chmod -R 777 *
+            # adb push framework.jar /sdcard/
+            # adb push monkey.jar /sdcard/
+            # adb shell chmod -R 777 /sdcard/
+            # adb shell CLASSPATH=/sdcard/monkey.jar:/sdcard/framework.jar exec app_process /system/bin tv.panda.test.monkey.Monkey -p com.device --uiautomatormix --running-minutes 3 -v -v
+            
+            git clone https://github.com/TestJken66/Fastbot_Android.git
+            if [ $# == 0 ]; then
+              cd Fastbot_Android
+              adb push *.jar /sdcard
+              adb push libs/* /data/local/tmp/
+              adb shell chmod -R 777 /sdcard/*
+              adb shell chmod -R 777 /data/local/tmp/*
+              adb shell CLASSPATH=/sdcard/monkeyq.jar:/sdcard/framework.jar:/sdcard/fastbot-thirdpart.jar exec app_process /system/bin com.android.commands.monkey.Monkey -p com.device --agent reuseq --running-minutes 3 --throttle 80 -v -v
+            fi
+            sleep 2
             echo "${{ matrix.api-level_x86_default }}-${{ matrix.target_x86_default }}-${{ matrix.arch_x86_default }} 运行完毕。。。。。。。。。"
             rm -rf ~/.android/avd/
