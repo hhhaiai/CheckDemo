@@ -18,7 +18,7 @@ jobs:
         with:
           java-version: '11'
           distribution: 'adopt'
-          cache: gradle
+          #cache: gradle
 
       - name: Modify permission and Build
         shell: bash
