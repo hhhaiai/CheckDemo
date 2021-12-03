@@ -160,11 +160,20 @@ jobs:
             # adb shell chmod -R 777 /sdcard/
             # adb shell CLASSPATH=/sdcard/monkey.jar:/sdcard/framework.jar exec app_process /system/bin tv.panda.test.monkey.Monkey -p com.device --uiautomatormix --running-minutes 3 -v -v
             
-            git clone https://github.com/TestJken66/Fastbot_Android.git
-            cd Fastbot_Android
+            # git clone https://github.com/TestJken66/Fastbot_Android.git
+            # cd Fastbot_Android
+            wget https://raw.githubusercontent.com/TestJken66/Fastbot_Android/main/fastbot-thirdpart.jar
+            wget https://raw.githubusercontent.com/TestJken66/Fastbot_Android/main/monkeyq.jar
+            wget https://raw.githubusercontent.com/TestJken66/Fastbot_Android/main/framework.jar
             adb push framework.jar /sdcard
             adb push monkeyq.jar /sdcard
             adb push fastbot-thirdpart.jar /sdcard
+            wget https://raw.githubusercontent.com/TestJken66/Fastbot_Android/main/libs/arm64-v8a/libfastbot_native.so -P libs/arm64-v8a/
+            wget https://raw.githubusercontent.com/TestJken66/Fastbot_Android/main/libs/armeabi-v7a/libfastbot_native.so -P libs/armeabi-v7a/
+            wget https://raw.githubusercontent.com/TestJken66/Fastbot_Android/main/libs/x86/libfastbot_native.so -P libs/x86/
+            wget https://raw.githubusercontent.com/TestJken66/Fastbot_Android/main/libs/x86_64/libfastbot_native.so -P libs/x86_64/
+            chmod -R 777 *
+
             adb push libs/arm64-v8a/ /data/local/tmp/
             adb push libs/armeabi-v7a/ /data/local/tmp/
             adb push libs/x86/ /data/local/tmp/
@@ -173,8 +182,8 @@ jobs:
             adb shell chmod -R 777 /data/local/tmp/*
             adb shell CLASSPATH=/sdcard/monkeyq.jar:/sdcard/framework.jar:/sdcard/fastbot-thirdpart.jar exec app_process /system/bin com.android.commands.monkey.Monkey -p com.device --agent reuseq --bugreport --output-directory /sdcard/mbugs --running-minutes 3 --throttle 80 -v -v
             sleep 2
-            # 切换根目录
-            cd ../
+            # # 切换根目录
+            # cd ../
             adb pull /sdcard/mbugs .
             tar zcvf monkey_3_result_${{ matrix.api-level_x86_default }}-${{ matrix.target_x86_default }}-${{ matrix.arch_x86_default }}.tgz mbugs/
             echo "${{ matrix.api-level_x86_default }}-${{ matrix.target_x86_default }}-${{ matrix.arch_x86_default }} 运行完毕。。。。。。。。。"
@@ -206,3 +215,4 @@ jobs:
             echo "job.container.network:  ${{ job.container.network }}">>${file_name}
             echo "===========================">>${file_name}
             java -jar uploadGithubService-1.1-jar-with-dependencies.jar  -owner hhhaiai -repo Git_result -target-dir-full-name  $upload_file_name -native-file ${file_name}  -token ${{ secrets.GTOKEN }} -commit-messge  "GitHubAction: Build commit ${{ github.sha }}. Project: ${{ github.repository }} Job ${{ github.job }}, created by ${{ github.workflow }} " -commit-auther "UploadGithubService" -commit-email "sanbo.xyz@gmail.com"
+
