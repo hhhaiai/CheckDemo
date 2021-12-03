@@ -39,7 +39,7 @@ jobs:
             ~/.android/adb*
           key: avd-cache
 
-      - name: Modify permission and Build
+      - name: checkout analysys-dev-sdk and sync
         shell: bash
         continue-on-error: true
         run: |
@@ -53,6 +53,12 @@ jobs:
           bash syncSubmodule.sh
           chmod -R 777 *
           git config core.filemode false
+
+      - name: build analysys-dev-sdk
+        shell: bash
+        continue-on-error: true
+        run: |
+          cd analysys-dev-sdk
           ./gradlew build
 
       # general file list
