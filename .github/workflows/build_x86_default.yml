@@ -150,7 +150,7 @@ jobs:
           avd-name: ${{ matrix.api-level_x86_default }}-${{ matrix.target_x86_default }}-${{ matrix.arch_x86_default }}
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           script: |
-            adb install -r ./appdemo-debug.apk
+            adb install -r ./casedemo-debug.apk
             adb shell pm list package
 
             # wget https://raw.githubusercontent.com/zhangzhao4444/Maxim/master/framework.jar
@@ -160,6 +160,7 @@ jobs:
             # adb push monkey.jar /sdcard/
             # adb shell chmod -R 777 /sdcard/
             # adb shell CLASSPATH=/sdcard/monkey.jar:/sdcard/framework.jar exec app_process /system/bin tv.panda.test.monkey.Monkey -p com.device --uiautomatormix --running-minutes 3 -v -v
+            # adb shell CLASSPATH=/sdcard/monkey.jar:/sdcard/framework.jar exec app_process /system/bin tv.panda.test.monkey.Monkey -p cn.analysys.casedemo --uiautomatormix --running-minutes 3 -v -v
 
             wget https://raw.githubusercontent.com/TestJken66/Fastbot_Android/main/fastbot-thirdpart.jar
             wget https://raw.githubusercontent.com/TestJken66/Fastbot_Android/main/monkeyq.jar
@@ -178,7 +179,8 @@ jobs:
             adb push libs/x86_64/ /data/local/tmp/
             adb shell chmod -R 777 /sdcard/
             adb shell chmod -R 777 /data/local/tmp/*
-            adb shell CLASSPATH=/sdcard/monkeyq.jar:/sdcard/framework.jar:/sdcard/fastbot-thirdpart.jar exec app_process /system/bin com.android.commands.monkey.Monkey -p com.device --agent reuseq --bugreport --output-directory /sdcard/mbugs --running-minutes 3 --throttle 200 -v -v
+            #adb shell CLASSPATH=/sdcard/monkeyq.jar:/sdcard/framework.jar:/sdcard/fastbot-thirdpart.jar exec app_process /system/bin com.android.commands.monkey.Monkey -p com.device --agent reuseq --bugreport --output-directory /sdcard/mbugs --running-minutes 3 --throttle 200 -v -v
+            adb shell CLASSPATH=/sdcard/monkeyq.jar:/sdcard/framework.jar:/sdcard/fastbot-thirdpart.jar exec app_process /system/bin com.android.commands.monkey.Monkey -p cn.analysys.casedemo --agent reuseq --bugreport --output-directory /sdcard/mbugs --running-minutes 3 --throttle 200 -v -v
             echo "。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。"
             echo "。。。。。。。。。。。。。。。。。。运行完毕了。。。。。。。。。。。。。。。。。。。"
             echo "。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。"
