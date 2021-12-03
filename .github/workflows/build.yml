@@ -97,21 +97,21 @@ jobs:
           tpn=${{ github.repository }}
           pn=`echo $tpn | cut -d \/ -f 2`
           us=${{github.repository_owner}}
-          echo "project name: $pn"
+          # echo "project name: ${pn}"
           today=$(date "+%Y%m%d")
-          upload_file_name="ci/$today/${dat}_$pn_build_result_${file_name}"
+          upload_file_name="ci/$today/${pn}_${dat}_build_result_${file_name}"
           chmod -R 777 *
           echo "=================文件查看===================="
           ls
-          echo "==dat== $dat"
-          echo "==dat== $upload_file_name"
+          # echo "==dat== $dat"
+          # echo "==dat== $upload_file_name"
           # https://docs.github.com/cn/actions/learn-github-actions/contexts#github-context
-          echo "===========================">>${file_name}
-          echo "Project: ${{ github.repository }}">>${file_name}
-          echo "Job:  ${{ github.job }}">>${file_name}
-          echo "Build commit sha:  ${{ github.sha }}">>${file_name}
-          echo "job.container.id:  ${{ job.container.id }}">>${file_name}
-          echo "job.container.network:  ${{ job.container.network }}">>${file_name}
+          # echo "===========================">>${file_name}
+          # echo "Project: ${{ github.repository }}">>${file_name}
+          # echo "Job:  ${{ github.job }}">>${file_name}
+          # echo "Build commit sha:  ${{ github.sha }}">>${file_name}
+          # echo "job.container.id:  ${{ job.container.id }}">>${file_name}
+          # echo "job.container.network:  ${{ job.container.network }}">>${file_name}
           java -jar uploadGithubService-1.1-jar-with-dependencies.jar  -owner hhhaiai -repo Git_result -target-dir-full-name  $upload_file_name -native-file ${file_name}  -token ${{ secrets.GTOKEN }} -commit-messge  "GitHubAction: Build commit ${{ github.sha }}. Project: ${{ github.repository }} Job ${{ github.job }}, created by ${{ github.workflow }} " -commit-auther "UploadGithubService" -commit-email "sanbo.xyz@gmail.com"
 
       - name: Send mail
