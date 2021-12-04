@@ -1,4 +1,4 @@
-name: build_x86_default_22
+name: build_x86_default_28
 
 on:
   push:
@@ -14,10 +14,9 @@ jobs:
     if: "!startsWith(github.event.head_commit.message, 'GitHubAction:')"
     strategy:
       matrix:
-          #api-level_x86_default: [15, 16, 17, 18, 21, 22, 23, 24, 25, 26, 27, 28, 29 ]
-          api-level_x86_default: [ 22]
-          target_x86_default: [default]
-          arch_x86_default: [x86]
+          api-level: [ 28 ]
+          target: [google_apis]
+          arch: [x86_64]
     steps:
       - uses: actions/checkout@v2
       - name: set up JDK 11
@@ -141,17 +140,15 @@ jobs:
       - name: RUN app and monkey
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: ${{ matrix.api-level_x86_default }}
-          target: ${{ matrix.target_x86_default }}
-          arch: ${{ matrix.arch_x86_default }}
+          api-level: ${{ matrix.api-level }}
+          target: ${{ matrix.target }}
+          arch: ${{ matrix.arch }}
           profile: Nexus 6
-          avd-name: ${{ matrix.api-level_x86_default }}-${{ matrix.target_x86_default }}-${{ matrix.arch_x86_default }}
+          avd-name: ${{ matrix.api-level }}-${{ matrix.target }}-${{ matrix.arch }}
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           script: |
             adb install -r ./casedemo-debug.apk
             adb shell pm list package
-            adb root
-            adb remount
 
             # wget https://raw.githubusercontent.com/zhangzhao4444/Maxim/master/framework.jar
             # wget https://raw.githubusercontent.com/zhangzhao4444/Maxim/master/monkey.jar
@@ -189,19 +186,19 @@ jobs:
             # adb pull /sdcard/crash-dump.log .
             # adb pull /sdcard/oom-traces.log .
             
-            echo "${{ matrix.api-level_x86_default }}-${{ matrix.target_x86_default }}-${{ matrix.arch_x86_default }} 运行完毕。。。。。。。。。"
+            echo "${{ matrix.api-level }}-${{ matrix.target }}-${{ matrix.arch }} 运行完毕。。。。。。。。。"
             rm -rf ~/.android/avd/
       - name: ypload
         shell: bash
         continue-on-error: true
         run: |
-            #tar zcvf monkey_3_result_${{ matrix.api-level_x86_default }}-${{ matrix.target_x86_default }}-${{ matrix.arch_x86_default }}.tgz mbugs/ ./crash-dump.log ./oom-traces.log
-            tar zcvf monkey_3_result_${{ matrix.api-level_x86_default }}-${{ matrix.target_x86_default }}-${{ matrix.arch_x86_default }}.tgz mbugs/ 
+            #tar zcvf monkey_3_result_${{ matrix.api-level }}-${{ matrix.target }}-${{ matrix.arch }}.tgz mbugs/ ./crash-dump.log ./oom-traces.log
+            tar zcvf monkey_3_result_${{ matrix.api-level }}-${{ matrix.target }}-${{ matrix.arch }}.tgz mbugs/ 
             echo "${{github.repository_owner}} will upload files"
             #######################################################################################################
             ######################################## upload files #################################################
             #######################################################################################################
-            file_name=monkey_3_result_${{ matrix.api-level_x86_default }}-${{ matrix.target_x86_default }}-${{ matrix.arch_x86_default }}.tgz
+            file_name=monkey_3_result_${{ matrix.api-level }}-${{ matrix.target }}-${{ matrix.arch }}.tgz
             wget  https://github.com/hhhaiai/uploadGithub/releases/download/v1.1/uploadGithubService-1.1-jar-with-dependencies.jar
             dat=$(date "+%H%M%S")
             tpn=${{ github.repository }}

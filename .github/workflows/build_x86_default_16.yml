@@ -1,4 +1,4 @@
-name: build_x86_default_22
+name: build_x86_default_16
 
 on:
   push:
@@ -15,7 +15,7 @@ jobs:
     strategy:
       matrix:
           #api-level_x86_default: [15, 16, 17, 18, 21, 22, 23, 24, 25, 26, 27, 28, 29 ]
-          api-level_x86_default: [ 22]
+          api-level_x86_default: [ 16 ]
           target_x86_default: [default]
           arch_x86_default: [x86]
     steps:
