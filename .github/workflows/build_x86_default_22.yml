@@ -150,8 +150,7 @@ jobs:
           script: |
             adb install -r ./casedemo-debug.apk
             adb shell pm list package
-            adb root
-            adb remount
+
 
             # wget https://raw.githubusercontent.com/zhangzhao4444/Maxim/master/framework.jar
             # wget https://raw.githubusercontent.com/zhangzhao4444/Maxim/master/monkey.jar
