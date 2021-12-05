@@ -1,4 +1,4 @@
-name: build_x86_default_18
+name: build_x86_64-default_24
 
 on:
   push:
@@ -14,10 +14,9 @@ jobs:
     if: "!startsWith(github.event.head_commit.message, 'GitHubAction:')"
     strategy:
       matrix:
-          #api-level_x86_default: [15, 16, 17, 18, 21, 22, 23, 24, 25, 26, 27, 28, 29 ]
-          api-level_x86_default: [ 18 ]
-          target_x86_default: [default]
-          arch_x86_default: [x86]
+        api-level: [ 24 ]
+        target: [default]
+        arch: [x86_64]
     steps:
       - uses: actions/checkout@v2
       - name: set up JDK 11
@@ -149,6 +148,7 @@ jobs:
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           script: |
             adb install -r ./casedemo-debug.apk
+            adb shell pm list package
 
             # wget https://raw.githubusercontent.com/zhangzhao4444/Maxim/master/framework.jar
             # wget https://raw.githubusercontent.com/zhangzhao4444/Maxim/master/monkey.jar

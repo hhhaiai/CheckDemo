@@ -1,4 +1,4 @@
-name: build_x86_64-google_apis_playstore_28
+name: build_x86_64-default_31
 
 on:
   push:
@@ -14,8 +14,8 @@ jobs:
     if: "!startsWith(github.event.head_commit.message, 'GitHubAction:')"
     strategy:
       matrix:
-        api-level: [ 28 ]
-        target: [google_apis_playstore]
+        api-level: [ 31 ]
+        target: [default]
         arch: [x86_64]
     steps:
       - uses: actions/checkout@v2
@@ -149,8 +149,6 @@ jobs:
           script: |
             adb install -r ./casedemo-debug.apk
             adb shell pm list package
-            adb root
-            adb remount
 
             # wget https://raw.githubusercontent.com/zhangzhao4444/Maxim/master/framework.jar
             # wget https://raw.githubusercontent.com/zhangzhao4444/Maxim/master/monkey.jar
