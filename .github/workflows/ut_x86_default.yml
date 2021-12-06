@@ -86,7 +86,7 @@ jobs:
             ls
             ./gradlew connectedAndroidTest mergeAndroidReports || true
             echo "==============run case over==============="
-            tar -zcvf ut_${{ matrix.api-level_x86_default }}-${{ matrix.target_x86_default }}-${{ matrix.arch_x86_default }}.tgz build/ dev-sdk/build/reports/
+            tar -zcvf ut_${{ matrix.api-level_x86_default }}-${{ matrix.target_x86_default }}-${{ matrix.arch_x86_default }}.tgz build/ dev-sdk/build/reports/>t.txt || true
             echo "==============tar ut over. ls==============="
             echo "${{ matrix.api-level_x86_default }}-${{ matrix.target_x86_default }}-${{ matrix.arch_x86_default }} 运行完毕。。。。。。。。。"
             rm -rf ~/.android/avd/
