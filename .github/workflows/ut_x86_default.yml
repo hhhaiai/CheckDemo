@@ -84,6 +84,8 @@ jobs:
           script: |
             echo "=================查看当前目录============="
             ls
+            source replace_line.sh
+            comment
             ./gradlew connectedAndroidTest mergeAndroidReports || true
             echo "==============run case over==============="
             tar -zcvf ut_${{ matrix.api-level_x86_default }}-${{ matrix.target_x86_default }}-${{ matrix.arch_x86_default }}.tgz build/ dev-sdk/build/reports/>t.txt || true

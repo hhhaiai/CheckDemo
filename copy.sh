@@ -6,4 +6,3 @@ do
         cp -rf analysys-dev-sdk/$ele .
     fi
 done
-
