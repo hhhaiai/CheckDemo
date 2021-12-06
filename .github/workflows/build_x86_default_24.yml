@@ -91,7 +91,7 @@ jobs:
           avd-name: ${{ matrix.api-level_x86_default }}-${{ matrix.target_x86_default }}-${{ matrix.arch_x86_default }}
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           script: |
-            adb install -r ./casedemo-debug.apk
+            adb install -r ./appdemo-debug.apk
             adb shell pm list package
 
             wget https://raw.githubusercontent.com/TestJken66/Fastbot_Android/main/fastbot-thirdpart.jar
@@ -109,7 +109,11 @@ jobs:
             adb push libs/armeabi-v7a/ /data/local/tmp/ ||true
             adb push libs/x86/ /data/local/tmp/ ||true
             adb push libs/x86_64/ /data/local/tmp/ ||true
-            adb shell CLASSPATH=/sdcard/monkeyq.jar:/sdcard/framework.jar:/sdcard/fastbot-thirdpart.jar exec app_process /system/bin com.android.commands.monkey.Monkey -p cn.analysys.casedemo --agent reuseq --bugreport --output-directory /sdcard/mbugs --running-minutes 3 --throttle 500 -v -v || true
+            # cn.analysys.casedemo
+            # adb shell CLASSPATH=/sdcard/monkeyq.jar:/sdcard/framework.jar:/sdcard/fastbot-thirdpart.jar exec app_process /system/bin com.android.commands.monkey.Monkey -p cn.analysys.casedemo --agent reuseq --bugreport --output-directory /sdcard/mbugs --running-minutes 3 --throttle 500 -v -v || true
+            #com.device
+            adb shell CLASSPATH=/sdcard/monkeyq.jar:/sdcard/framework.jar:/sdcard/fastbot-thirdpart.jar exec app_process /system/bin com.android.commands.monkey.Monkey -p com.device --agent reuseq --bugreport --output-directory /sdcard/mbugs --running-minutes 3 --throttle 500 -v -v || true
+            
             echo "。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。"
             echo "。。。。。。。。。。。。。。。。。。运行完毕了。。。。。。。。。。。。。。。。。。。"
             echo "。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。"
