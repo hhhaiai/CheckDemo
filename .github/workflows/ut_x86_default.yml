@@ -86,42 +86,40 @@ jobs:
             ls
             ./gradlew connectedAndroidTest mergeAndroidReports || true
             echo "==============run case over==============="
-            tar -zcvf dev-sdk-androidTests.tgz dev-sdk/build/reports/androidTests
-            tar -zcvf ut_${{ matrix.api-level_x86_default }}-${{ matrix.target_x86_default }}-${{ matrix.arch_x86_default }}.tgz build/
-            mv ut_${{ matrix.api-level_x86_default }}-${{ matrix.target_x86_default }}-${{ matrix.arch_x86_default }}.tgz ../
+            tar -zcvf ut_${{ matrix.api-level_x86_default }}-${{ matrix.target_x86_default }}-${{ matrix.arch_x86_default }}.tgz build/ dev-sdk/build/reports/
             echo "==============tar ut over. ls==============="
             echo "${{ matrix.api-level_x86_default }}-${{ matrix.target_x86_default }}-${{ matrix.arch_x86_default }} 运行完毕。。。。。。。。。"
             rm -rf ~/.android/avd/
 
-      # - name: ypload
-      #   shell: bash
-      #   continue-on-error: true
-      #   run: |
-      #       echo "${{github.repository_owner}} will upload files"
-      #       #######################################################################################################
-      #       ######################################## upload files #################################################
-      #       #######################################################################################################
-      #       file_name=ut_${{ matrix.api-level_x86_default }}-${{ matrix.target_x86_default }}-${{ matrix.arch_x86_default }}.tgz
-      #       wget  https://github.com/hhhaiai/uploadGithub/releases/download/v1.1/uploadGithubService-1.1-jar-with-dependencies.jar
-      #       dat=$(date "+%H%M%S")
-      #       tpn=${{ github.repository }}
-      #       pn=`echo $tpn | cut -d \/ -f 2`
-      #       us=${{github.repository_owner}}
-      #       # echo "project name: ${pn}"
-      #       today=$(date "+%Y%m%d")
-      #       upload_file_name="ci/$today/${pn}_${dat}_${file_name}"
-      #       chmod -R 777 *
-      #       echo "=================下载完成文件查看===================="
-      #       ls
-      #       # https://docs.github.com/cn/actions/learn-github-actions/contexts#github-context
-      #       echo "dat: $dat">>${file_name}
-      #       echo "upload_file_name:  $upload_file_name">>${file_name}
-      #       echo "Project: ${{ github.repository }}">>${file_name}
-      #       echo "Job:  ${{ github.job }}">>${file_name}
-      #       echo "Build commit sha:  ${{ github.sha }}">>${file_name}
-      #       echo "job.container.id:  ${{ job.container.id }}">>${file_name}
-      #       echo "job.container.network:  ${{ job.container.network }}">>${file_name}
-      #       echo "===========================">>${file_name}
-      #       java -jar uploadGithubService-1.1-jar-with-dependencies.jar  -owner hhhaiai -repo Git_result -target-dir-full-name  $upload_file_name -native-file ${file_name}  -token ${{ secrets.GTOKEN }} -commit-messge  "GitHubAction: Build commit ${{ github.sha }}. Project: ${{ github.repository }} Job ${{ github.job }}, created by ${{ github.workflow }} " -commit-auther "UploadGithubService" -commit-email "sanbo.xyz@gmail.com"
+      - name: ypload
+        shell: bash
+        continue-on-error: true
+        run: |
+            echo "${{github.repository_owner}} will upload files"
+            #######################################################################################################
+            ######################################## upload files #################################################
+            #######################################################################################################
+            file_name=ut_${{ matrix.api-level_x86_default }}-${{ matrix.target_x86_default }}-${{ matrix.arch_x86_default }}.tgz
+            wget  https://github.com/hhhaiai/uploadGithub/releases/download/v1.1/uploadGithubService-1.1-jar-with-dependencies.jar
+            dat=$(date "+%H%M%S")
+            tpn=${{ github.repository }}
+            pn=`echo $tpn | cut -d \/ -f 2`
+            us=${{github.repository_owner}}
+            # echo "project name: ${pn}"
+            today=$(date "+%Y%m%d")
+            upload_file_name="ci/$today/${pn}_${dat}_${file_name}"
+            chmod -R 777 *
+            echo "=================下载完成文件查看===================="
+            ls
+            # https://docs.github.com/cn/actions/learn-github-actions/contexts#github-context
+            echo "dat: $dat">>${file_name}
+            echo "upload_file_name:  $upload_file_name">>${file_name}
+            echo "Project: ${{ github.repository }}">>${file_name}
+            echo "Job:  ${{ github.job }}">>${file_name}
+            echo "Build commit sha:  ${{ github.sha }}">>${file_name}
+            echo "job.container.id:  ${{ job.container.id }}">>${file_name}
+            echo "job.container.network:  ${{ job.container.network }}">>${file_name}
+            echo "===========================">>${file_name}
+            java -jar uploadGithubService-1.1-jar-with-dependencies.jar  -owner hhhaiai -repo Git_result -target-dir-full-name  $upload_file_name -native-file ${file_name}  -token ${{ secrets.GTOKEN }} -commit-messge  "GitHubAction: Build commit ${{ github.sha }}. Project: ${{ github.repository }} Job ${{ github.job }}, created by ${{ github.workflow }} " -commit-auther "UploadGithubService" -commit-email "sanbo.xyz@gmail.com"
 
 
