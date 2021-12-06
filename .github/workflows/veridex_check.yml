@@ -10,7 +10,7 @@ on:
 
 jobs:
   build:
-    runs-on: macOS-11
+    runs-on: ubuntu-latest
     if: "!startsWith(github.event.head_commit.message, 'GitHubAction:')"
 
     steps:
@@ -53,6 +53,7 @@ jobs:
           bash syncSubmodule.sh
           chmod -R 777 *
           git config core.filemode false
+          sudo apt-get -y install unzip
 
       - name: build analysys-dev-sdk
         shell: bash
@@ -150,7 +151,7 @@ jobs:
           ignore_cert: true
           priority: low
           secure: true
-          attachments: ./veridex_check.txt
+          attachments: ./analysys-dev-sdk/veridex_check.txt
           #html_body: file://dev-sdk/build/reports/lint-results.html
           #convert_markdown: true
 
