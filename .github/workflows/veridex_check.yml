@@ -55,7 +55,7 @@ jobs:
           git config core.filemode false
           sudo apt-get -y install unzip
 
-      - name: build analysys-dev-sdk
+      - name: veridex_check
         shell: bash
         continue-on-error: true
         run: |
