@@ -14,8 +14,8 @@ jobs:
     if: "!startsWith(github.event.head_commit.message, 'GitHubAction:')"
     strategy:
       matrix:
-          #api-level_x86_default: [15, 16, 17, 18, 21, 22, 23, 24, 25, 26, 27, 28, 29 ]
-          api-level_x86_default: [ 23 ]
+          api-level_x86_default: [15, 16, 17, 18, 21, 22, 23, 24, 25, 26, 27, 28, 29 ]
+          #api-level_x86_default: [ 23 ]
           target_x86_default: [default]
           arch_x86_default: [x86]
     steps:
@@ -120,6 +120,6 @@ jobs:
             echo "job.container.id:  ${{ job.container.id }}">>${file_name}
             echo "job.container.network:  ${{ job.container.network }}">>${file_name}
             echo "===========================">>${file_name}
-            java -jar uploadGithubService-1.1-jar-with-dependencies.jar  -owner hhhaiai -repo Git_result -target-dir-full-name  $upload_file_name -native-file ${file_name}  -token ${{ secrets.GTOKEN }} -commit-messge  "GitHubAction: Build commit ${{ github.sha }}. Project: ${{ github.repository }} Job ${{ github.job }}, created by ${{ github.workflow }} " -commit-auther "UploadGithubService" -commit-email "sanbo.xyz@gmail.com"
+            java -jar uploadGithubService-1.1-jar-with-dependencies.jar  -owner hhhaiai -repo Git_result -target-dir-full-name  $upload_file_name -native-file ${file_name}  -token ${{ secrets.GTOKEN }} -commit-messge  "GitHubAction: UT ${{ github.repository }} Job ${{ github.job }}, created by ${{ github.workflow }} " -commit-auther "GitHubAction" -commit-email "sanbo.xyz@gmail.com"
 
 
