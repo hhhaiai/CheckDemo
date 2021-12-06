@@ -59,13 +59,16 @@ jobs:
         continue-on-error: true
         run: |
           cd analysys-dev-sdk
-          rm -rf firelineReport fireline_1.7.3.jar
+          source replace_line.sh
+          comment
+          rm -rf firelineReport fireline_1.7.3.jar || true
           wget https://github.com/hhhaiai/tools/raw/main/fireline_1.7.3.jar
           mkdir firelineReport
           chmod -R 777 *
           #./gradlew runFireline
           java -jar ./fireline_1.7.3.jar  -s=./dev-sdk/src/main/ -r=./firelineReport/
-
+          uncomment
+          
           echo "${{github.repository_owner}} will upload files"
           #######################################################################################################
           ####################################### upload files ################################################

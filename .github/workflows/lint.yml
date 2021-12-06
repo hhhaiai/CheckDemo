@@ -59,7 +59,10 @@ jobs:
         continue-on-error: true
         run: |
           cd analysys-dev-sdk
+          source replace_line.sh
+          comment
           ./gradlew lint
+          uncomment
           #ls -R dev-sdk/build/>./lint_tree.txt
           echo "${{github.repository_owner}} will upload files"
           #######################################################################################################

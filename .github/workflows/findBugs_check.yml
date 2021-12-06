@@ -63,11 +63,14 @@ jobs:
           tar zxvf findbugs-3.0.1.tar.gz
           ### export PATH
           export PATH=$PATH:$(pwd)/findbugs-3.0.1/bin/
+
+          source replace_line.sh
+          comment
           ./gradlew :dev-sdk:assemble
           cp ./dev-sdk/build/outputs/aar/dev-sdk-debug.aar ./
           unzip dev-sdk-debug.aar
           findbugs -html ./classes.jar>./findbugs_result.html
-
+          uncomment
           echo "${{github.repository_owner}} will upload files"
           #######################################################################################################
           ####################################### upload files ################################################

@@ -60,6 +60,8 @@ jobs:
         continue-on-error: true
         run: |
           cd analysys-dev-sdk
+          source replace_line.sh
+          comment
           ./gradlew build
           ### export PATH
           export PATH=$PATH:${ANDROID_HOME}/emulator:${ANDROID_HOME}/platform-tools:${ANDROID_HOME}/tools:${ANDROID_HOME}/tools/bin:${ANDROID_HOME}/build-tools/30.0.3:${ANDROID_HOME}/build-tools/30.0.3/lld-bin:${ANDROID_HOME}/ndk/23.0.7599858
@@ -134,7 +136,7 @@ jobs:
             fi # end with ./appcompat.tar.gz
 
           fi # end with wget
-
+          uncomment
       - name: Send mail
         uses: dawidd6/action-send-mail@v3
         with:
