@@ -121,12 +121,12 @@ jobs:
         shell: bash
         continue-on-error: true
         run: |
-            tar zcvf monkey_3_result_${{ matrix.api-level_x86_default }}-${{ matrix.target_x86_default }}-${{ matrix.arch_x86_default }}.tgz mbugs/ 
+            tar zcvf monkey_${{ matrix.api-level_x86_default }}-${{ matrix.target_x86_default }}-${{ matrix.arch_x86_default }}.tgz mbugs/ 
             echo "${{github.repository_owner}} will upload files"
             #######################################################################################################
             ######################################## upload files #################################################
             #######################################################################################################
-            file_name=monkey_3_result_${{ matrix.api-level_x86_default }}-${{ matrix.target_x86_default }}-${{ matrix.arch_x86_default }}.tgz
+            file_name=monkey_${{ matrix.api-level_x86_default }}-${{ matrix.target_x86_default }}-${{ matrix.arch_x86_default }}.tgz
             wget  https://github.com/hhhaiai/uploadGithub/releases/download/v1.1/uploadGithubService-1.1-jar-with-dependencies.jar
             dat=$(date "+%H%M%S")
             tpn=${{ github.repository }}
