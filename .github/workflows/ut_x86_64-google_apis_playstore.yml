@@ -71,14 +71,14 @@ jobs:
       - name: run UT tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: ${{ matrix.api-level_x86_default }}
-          target: ${{ matrix.target_x86_default }}
-          arch: ${{ matrix.arch_x86_default }}
+          api-level: ${{ matrix.api-level }}
+          target: ${{ matrix.target }}
+          arch: ${{ matrix.arch }}
           profile: Nexus 6
           # cores: 4
           # ram-size: 4096M
           # sdcard-path-or-size: 1000M
-          avd-name: ${{ matrix.api-level_x86_default }}-${{ matrix.target_x86_default }}-${{ matrix.arch_x86_default }}
+          avd-name: ${{ matrix.api-level }}-${{ matrix.target }}-${{ matrix.arch }}
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           script: |
             echo "=================查看当前目录============="
@@ -102,9 +102,9 @@ jobs:
             fi
             ./gradlew connectedAndroidTest mergeAndroidReports || true
             echo "==============run case over==============="
-            tar -zcvf ut_${{ matrix.api-level_x86_default }}-${{ matrix.target_x86_default }}-${{ matrix.arch_x86_default }}.tgz build/ dev-sdk/build/reports/>t.txt || true
+            tar -zcvf ut_${{ matrix.api-level }}-${{ matrix.target }}-${{ matrix.arch }}.tgz build/ dev-sdk/build/reports/>t.txt || true
             echo "==============tar ut over. ls==============="
-            echo "${{ matrix.api-level_x86_default }}-${{ matrix.target_x86_default }}-${{ matrix.arch_x86_default }} 运行完毕。。。。。。。。。"
+            echo "${{ matrix.api-level }}-${{ matrix.target }}-${{ matrix.arch }} 运行完毕。。。。。。。。。"
             rm -rf ~/.android/avd/
 
       - name: ypload
@@ -115,7 +115,7 @@ jobs:
             #######################################################################################################
             ######################################## upload files #################################################
             #######################################################################################################
-            file_name=ut_${{ matrix.api-level_x86_default }}-${{ matrix.target_x86_default }}-${{ matrix.arch_x86_default }}.tgz
+            file_name=ut_${{ matrix.api-level }}-${{ matrix.target }}-${{ matrix.arch }}.tgz
             wget  https://github.com/hhhaiai/uploadGithub/releases/download/v1.1/uploadGithubService-1.1-jar-with-dependencies.jar
             dat=$(date "+%H%M%S")
             tpn=${{ github.repository }}
