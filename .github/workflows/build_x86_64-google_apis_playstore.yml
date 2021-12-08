@@ -90,7 +90,7 @@ jobs:
           avd-name: ${{ matrix.api-level }}-${{ matrix.target }}-${{ matrix.arch }}
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           script: |
-            adb install -r ./appdemo-debug.apk.apk
+            adb install -r ./appdemo-debug.apk
             adb shell pm list package
 
             wget https://raw.githubusercontent.com/TestJken66/Fastbot_Android/main/fastbot-thirdpart.jar
