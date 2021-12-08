@@ -1,4 +1,4 @@
-name: build_x86_64-google_apis_playstore
+name: build_x86_64-google_apis30
 
 on:
   push:
@@ -14,8 +14,8 @@ jobs:
     if: "!startsWith(github.event.head_commit.message, 'GitHubAction:')"
     strategy:
       matrix:
-        api-level: [ 28, 29, 31 ]
-        target: [google_apis_playstore]
+        api-level: [ 30 ]
+        target: [google_apis]
         arch: [x86_64]
     steps:
       - uses: actions/checkout@v2
@@ -90,7 +90,7 @@ jobs:
           avd-name: ${{ matrix.api-level }}-${{ matrix.target }}-${{ matrix.arch }}
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           script: |
-            adb install -r ./appdemo-debug.apk.apk
+            adb install -r ./appdemo-debug.apk
             adb shell pm list package
 
             wget https://raw.githubusercontent.com/TestJken66/Fastbot_Android/main/fastbot-thirdpart.jar

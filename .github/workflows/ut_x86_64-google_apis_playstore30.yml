@@ -1,4 +1,4 @@
-name: ut_x86_64-default21
+name: ut_x86_64-google_apis_playstore30
 
 on:
   push:
@@ -14,8 +14,8 @@ jobs:
     if: "!startsWith(github.event.head_commit.message, 'GitHubAction:')"
     strategy:
       matrix:
-        api-level: [ 21 ]
-        target: [default]
+        api-level: [ 30 ]
+        target: [google_apis_playstore]
         arch: [x86_64]
     steps:
       - uses: actions/checkout@v2

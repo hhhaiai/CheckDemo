@@ -1,4 +1,4 @@
-name: ut_x86_64-default21
+name: spoon_x86_default21
 
 on:
   push:
@@ -14,9 +14,9 @@ jobs:
     if: "!startsWith(github.event.head_commit.message, 'GitHubAction:')"
     strategy:
       matrix:
-        api-level: [ 21 ]
-        target: [default]
-        arch: [x86_64]
+          api-level_x86_default: [ 21 ]
+          target: [default]
+          arch_x86_default: [x86]
     steps:
       - uses: actions/checkout@v2
       - name: set up JDK 11
@@ -68,28 +68,36 @@ jobs:
           echo "===============拷贝完成=================="
           ls
 
-      - name: run UT tests
+      - name: run spoon tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: ${{ matrix.api-level }}
+          api-level: ${{ matrix.api-level_x86_default }}
           target: ${{ matrix.target }}
-          arch: ${{ matrix.arch }}
+          arch: ${{ matrix.arch_x86_default }}
           profile: Nexus 6
           # cores: 4
           # ram-size: 4096M
           # sdcard-path-or-size: 1000M
-          avd-name: ${{ matrix.api-level }}-${{ matrix.target }}-${{ matrix.arch }}
+          avd-name: ${{ matrix.api-level_x86_default }}-${{ matrix.target }}-${{ matrix.arch_x86_default }}
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           script: |
             echo "=================查看当前目录============="
             ls
             source ./replace_line.sh || true
             comment || true
-            ./gradlew connectedAndroidTest mergeAndroidReports || true
-            echo "==============run case over==============="
-            tar -zcvf ut_${{ matrix.api-level }}-${{ matrix.target }}-${{ matrix.arch }}.tgz build/ dev-sdk/build/reports/>t.txt || true
-            echo "==============tar ut over. ls==============="
-            echo "${{ matrix.api-level }}-${{ matrix.target }}-${{ matrix.arch }} 运行完毕。。。。。。。。。"
+            ./gradlew build || true
+            ./gradlew connectedAndroidTest||true
+            export PATH=$PATH:${ANDROID_HOME}/emulator:${ANDROID_HOME}/platform-tools:${ANDROID_HOME}/tools:${ANDROID_HOME}/tools/bin:${ANDROID_HOME}/build-tools/30.0.3:${ANDROID_HOME}/build-tools/30.0.3/lld-bin:${ANDROID_HOME}/ndk/23.0.7599858
+            wget https://repo1.maven.org/maven2/com/squareup/spoon/spoon-runner/1.7.1/spoon-runner-1.7.1-jar-with-dependencies.jar
+            if [ $# == 0 ]; then
+              java -jar spoon-runner-1.7.1-jar-with-dependencies.jar --test-apk ./dev-sdk/build/outputs/apk/androidTest/debug/dev-sdk-debug-androidTest.apk --apk ./appdemo/build/outputs/apk/release/appdemo-release.apk --output ./spoon/
+              if [ $# == 0 ]; then
+                echo "==============run spoon over==============="
+                tar -zcvf  spoon-${{ matrix.api-level_x86_default }}-${{ matrix.target }}-${{ matrix.arch_x86_default }}.tgz ./spoon/
+                echo "==============tar spoon over. ls==============="
+              fi
+            fi
+            echo "${{ matrix.api-level_x86_default }}-${{ matrix.target }}-${{ matrix.arch_x86_default }} 运行完毕。。。。。。。。。"
             rm -rf ~/.android/avd/
 
       - name: ypload
@@ -100,7 +108,7 @@ jobs:
             #######################################################################################################
             ######################################## upload files #################################################
             #######################################################################################################
-            file_name=ut_${{ matrix.api-level }}-${{ matrix.target }}-${{ matrix.arch }}.tgz
+            file_name=spoon-${{ matrix.api-level_x86_default }}-${{ matrix.target }}-${{ matrix.arch_x86_default }}
             wget  https://github.com/hhhaiai/uploadGithub/releases/download/v1.1/uploadGithubService-1.1-jar-with-dependencies.jar
             dat=$(date "+%H%M%S")
             tpn=${{ github.repository }}
@@ -121,6 +129,6 @@ jobs:
             echo "job.container.id:  ${{ job.container.id }}">>${file_name}
             echo "job.container.network:  ${{ job.container.network }}">>${file_name}
             echo "===========================">>${file_name}
-            java -jar uploadGithubService-1.1-jar-with-dependencies.jar  -owner hhhaiai -repo Git_result -target-dir-full-name  $upload_file_name -native-file ${file_name}  -token ${{ secrets.GTOKEN }} -commit-messge  "GitHubAction: UT ${{ github.repository }} Job ${{ github.job }}, created by ${{ github.workflow }} " -commit-auther "GitHubAction" -commit-email "sanbo.xyz@gmail.com"
+            java -jar uploadGithubService-1.1-jar-with-dependencies.jar  -owner hhhaiai -repo Git_result -target-dir-full-name  $upload_file_name -native-file ${file_name}  -token ${{ secrets.GTOKEN }} -commit-messge  "GitHubAction: spoon ${{ github.repository }} Job ${{ github.job }}, created by ${{ github.workflow }} " -commit-auther "GitHubAction" -commit-email "sanbo.xyz@gmail.com"
 
 
