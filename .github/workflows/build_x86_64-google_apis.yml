@@ -14,7 +14,7 @@ jobs:
     if: "!startsWith(github.event.head_commit.message, 'GitHubAction:')"
     strategy:
       matrix:
-        api-level: [ 21, 22, 23, 24, 25, 26, 28, 29, 30, 31 ]
+        api-level: [  23, 24, 25, 26, 28, 29, 30, 31 ]
         target: [google_apis]
         arch: [x86_64]
     steps:
@@ -63,8 +63,23 @@ jobs:
         continue-on-error: true
         run: |
           cd analysys-dev-sdk
-          source replace_line.sh
-          comment
+          if [ "$(uname -s)" = "Darwin" ]; then
+            sed -i '' "s/apply\ plugin:\ 'analysys_dev_track_tool'/\/\/apply\ plugin:\ 'analysys_dev_track_tool'/g" dev-sdk/build.gradle
+            sed -i '' "s/def\ isRelease\ =\ true/def\ isRelease\ =\ false/g" dev-sdk/build.gradle
+            sed -i '' "s/androidTestImplementation\ 'com.umeng.umsdk:common:9.4.4'/implementation\ 'com.umeng.umsdk:common:9.4.4'/g" dev-sdk/build.gradle
+            sed -i '' "s/androidTestImplementation\ 'com.umeng.umsdk:asms:1.4.1'/implementation\ 'com.umeng.umsdk:asms:1.4.1'/g" dev-sdk/build.gradle
+            sed -i '' "s/androidTestImplementation\ 'com.umeng.umsdk:apm:1.5.2'/implementation\ 'com.umeng.umsdk:apm:1.5.2'/g" dev-sdk/build.gradle
+            sed -i '' "s/androidTestImplementation\ 'com.umeng.umsdk:abtest:1.0.0'/implementation\ 'com.umeng.umsdk:abtest:1.0.0'/g" dev-sdk/build.gradle
+            sed -i '' "s/androidTestImplementation\ 'com.tencent.bugly:crashreport:3.3.92'/implementation\ 'com.tencent.bugly:crashreport:3.3.92'/g" dev-sdk/build.gradle
+          else
+            sed -i "s/apply\ plugin:\ 'analysys_dev_track_tool'/\/\/apply\ plugin:\ 'analysys_dev_track_tool'/g" dev-sdk/build.gradle
+            sed -i "s/def\ isRelease\ =\ true/def\ isRelease\ =\ false/g" dev-sdk/build.gradle
+            sed -i "s/androidTestImplementation\ 'com.umeng.umsdk:common:9.4.4'/implementation\ 'com.umeng.umsdk:common:9.4.4'/g" dev-sdk/build.gradle
+            sed -i "s/androidTestImplementation\ 'com.umeng.umsdk:asms:1.4.1'/implementation\ 'com.umeng.umsdk:asms:1.4.1'/g" dev-sdk/build.gradle
+            sed -i "s/androidTestImplementation\ 'com.umeng.umsdk:apm:1.5.2'/implementation\ 'com.umeng.umsdk:apm:1.5.2'/g" dev-sdk/build.gradle
+            sed -i "s/androidTestImplementation\ 'com.umeng.umsdk:abtest:1.0.0'/implementation\ 'com.umeng.umsdk:abtest:1.0.0'/g" dev-sdk/build.gradle
+            sed -i "s/androidTestImplementation\ 'com.tencent.bugly:crashreport:3.3.92'/implementation\ 'com.tencent.bugly:crashreport:3.3.92'/g" dev-sdk/build.gradle
+          fi
           ./gradlew build
 
       - name: copy result
