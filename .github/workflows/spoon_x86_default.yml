@@ -14,7 +14,9 @@ jobs:
     if: "!startsWith(github.event.head_commit.message, 'GitHubAction:')"
     strategy:
       matrix:
-          api-level_x86_default: [ 15, 16, 17, 18, 21, 22, 23, 24, 25, 26, 27, 28, 29 ]
+          #api-level: [ 15, 16, 17, 18, 21, 22, 23, 24, 25, 26, 27, 28, 29 ]
+          ## need more test
+          api-level: [ 27 ]
           target: [default]
           arch_x86_default: [x86]
     steps:
@@ -71,14 +73,14 @@ jobs:
       - name: run spoon tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: ${{ matrix.api-level_x86_default }}
+          api-level: ${{ matrix.api-level }}
           target: ${{ matrix.target }}
           arch: ${{ matrix.arch_x86_default }}
           profile: Nexus 6
           # cores: 4
           # ram-size: 4096M
           # sdcard-path-or-size: 1000M
-          avd-name: ${{ matrix.api-level_x86_default }}-${{ matrix.target }}-${{ matrix.arch_x86_default }}
+          avd-name: ${{ matrix.api-level }}-${{ matrix.target }}-${{ matrix.arch_x86_default }}
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           script: |
             echo "=================查看当前目录============="
@@ -91,9 +93,9 @@ jobs:
             wget https://repo1.maven.org/maven2/com/squareup/spoon/spoon-runner/1.7.1/spoon-runner-1.7.1-jar-with-dependencies.jar
             java -jar spoon-runner-1.7.1-jar-with-dependencies.jar --test-apk ./dev-sdk/build/outputs/apk/androidTest/debug/dev-sdk-debug-androidTest.apk --apk ./appdemo/build/outputs/apk/release/appdemo-release.apk --output ./spoon/
             echo "==============run spoon over==============="
-            tar -zcvf  spoon-${{ matrix.api-level_x86_default }}-${{ matrix.target }}-${{ matrix.arch_x86_default }}.tgz ./spoon/
+            tar -zcvf  spoon-${{ matrix.api-level }}-${{ matrix.target }}-${{ matrix.arch_x86_default }}.tgz ./spoon/
             echo "==============tar spoon over. ls==============="
-            echo "${{ matrix.api-level_x86_default }}-${{ matrix.target }}-${{ matrix.arch_x86_default }} 运行完毕。。。。。。。。。"
+            echo "${{ matrix.api-level }}-${{ matrix.target }}-${{ matrix.arch_x86_default }} 运行完毕。。。。。。。。。"
             rm -rf ~/.android/avd/
 
       - name: ypload
@@ -104,7 +106,7 @@ jobs:
             #######################################################################################################
             ######################################## upload files #################################################
             #######################################################################################################
-            file_name=spoon-${{ matrix.api-level_x86_default }}-${{ matrix.target }}-${{ matrix.arch_x86_default }}
+            file_name=spoon-${{ matrix.api-level }}-${{ matrix.target }}-${{ matrix.arch_x86_default }}
             wget  https://github.com/hhhaiai/uploadGithub/releases/download/v1.1/uploadGithubService-1.1-jar-with-dependencies.jar
             dat=$(date "+%H%M%S")
             tpn=${{ github.repository }}

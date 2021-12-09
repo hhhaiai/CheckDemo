@@ -14,7 +14,9 @@ jobs:
     if: "!startsWith(github.event.head_commit.message, 'GitHubAction:')"
     strategy:
       matrix:
-        api-level: [ 21, 22, 23, 24, 25, 26, 28, 29, 30, 31 ]
+        #api-level: [ 21, 22, 23, 24, 25, 26, 28, 29, 30, 31 ]
+        # need more test
+        api-level: [ 30 ]
         target: [google_apis]
         arch: [x86_64]
     steps:
