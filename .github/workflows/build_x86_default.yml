@@ -15,6 +15,7 @@ jobs:
     strategy:
       matrix:
           api-level: [15, 16, 17, 18, 21, 22, 23, 24, 25, 26, 27, 28, 29 ]
+          # 15, 16, 17, 18 can't run fastmonkey
           #api-level: [ 21, 22, 23, 24, 25, 26, 27, 28, 29 ]
           target: [default]
           arch: [x86]
