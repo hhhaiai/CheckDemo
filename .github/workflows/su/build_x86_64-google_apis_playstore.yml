@@ -1,4 +1,4 @@
-name: build_x86_64-google_apis
+name: build_x86_64-google_apis_playstore
 
 on:
   push:
@@ -14,10 +14,8 @@ jobs:
     if: "!startsWith(github.event.head_commit.message, 'GitHubAction:')"
     strategy:
       matrix:
-        #api-level: [ 21, 22, 23, 24, 25, 26, 28, 29, 30, 31 ]
-        # need more test
-        api-level: [ 30 ]
-        target: [google_apis]
+        api-level: [ 28, 29, 31 ]
+        target: [google_apis_playstore]
         arch: [x86_64]
     steps:
       - uses: actions/checkout@v2
@@ -65,8 +63,7 @@ jobs:
         continue-on-error: true
         run: |
           cd analysys-dev-sdk
-          source ./replace_line.sh || true
-          comment || true
+          bash ./replace.sh || true
           ./gradlew build
 
       - name: copy result

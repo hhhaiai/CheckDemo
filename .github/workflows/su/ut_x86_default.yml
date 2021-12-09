@@ -84,8 +84,7 @@ jobs:
           script: |
             echo "=================查看当前目录============="
             ls
-            source ./replace_line.sh || true
-            comment || true
+            ./replace.sh || true
             # may failed
             ./gradlew connectedAndroidTest mergeAndroidReports || true
             echo "==============run case over===============" || true

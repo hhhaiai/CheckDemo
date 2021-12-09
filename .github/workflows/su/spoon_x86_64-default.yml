@@ -1,4 +1,4 @@
-name: spoon_x86_default
+name: spoon_x86_64-default
 
 on:
   push:
@@ -14,11 +14,9 @@ jobs:
     if: "!startsWith(github.event.head_commit.message, 'GitHubAction:')"
     strategy:
       matrix:
-          #api-level: [ 15, 16, 17, 18, 21, 22, 23, 24, 25, 26, 27, 28, 29 ]
-          ## need more test
-          api-level: [ 27 ]
-          target: [default]
-          arch_x86_default: [x86]
+        api-level: [ 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31 ]
+        target: [default]
+        arch: [x86_64]
     steps:
       - uses: actions/checkout@v2
       - name: set up JDK 11
@@ -75,27 +73,26 @@ jobs:
         with:
           api-level: ${{ matrix.api-level }}
           target: ${{ matrix.target }}
-          arch: ${{ matrix.arch_x86_default }}
+          arch: ${{ matrix.arch }}
           profile: Nexus 6
           # cores: 4
           # ram-size: 4096M
           # sdcard-path-or-size: 1000M
-          avd-name: ${{ matrix.api-level }}-${{ matrix.target }}-${{ matrix.arch_x86_default }}
+          avd-name: ${{ matrix.api-level }}-${{ matrix.target }}-${{ matrix.arch }}
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           script: |
             echo "=================查看当前目录============="
             ls
-            source ./replace_line.sh || true
-            comment || true
+            ./replace.sh ||true
             ./gradlew build || true
             ./gradlew connectedAndroidTest||true
             export PATH=$PATH:${ANDROID_HOME}/emulator:${ANDROID_HOME}/platform-tools:${ANDROID_HOME}/tools:${ANDROID_HOME}/tools/bin:${ANDROID_HOME}/build-tools/30.0.3:${ANDROID_HOME}/build-tools/30.0.3/lld-bin:${ANDROID_HOME}/ndk/23.0.7599858
             wget https://repo1.maven.org/maven2/com/squareup/spoon/spoon-runner/1.7.1/spoon-runner-1.7.1-jar-with-dependencies.jar
             java -jar spoon-runner-1.7.1-jar-with-dependencies.jar --test-apk ./dev-sdk/build/outputs/apk/androidTest/debug/dev-sdk-debug-androidTest.apk --apk ./appdemo/build/outputs/apk/release/appdemo-release.apk --output ./spoon/
             echo "==============run spoon over==============="
-            tar -zcvf  spoon-${{ matrix.api-level }}-${{ matrix.target }}-${{ matrix.arch_x86_default }}.tgz ./spoon/
+            tar -zcvf  spoon-${{ matrix.api-level }}-${{ matrix.target }}-${{ matrix.arch }}.tgz ./spoon/
             echo "==============tar spoon over. ls==============="
-            echo "${{ matrix.api-level }}-${{ matrix.target }}-${{ matrix.arch_x86_default }} 运行完毕。。。。。。。。。"
+            echo "${{ matrix.api-level }}-${{ matrix.target }}-${{ matrix.arch }} 运行完毕。。。。。。。。。"
             rm -rf ~/.android/avd/
 
       - name: ypload
@@ -106,7 +103,7 @@ jobs:
             #######################################################################################################
             ######################################## upload files #################################################
             #######################################################################################################
-            file_name=spoon-${{ matrix.api-level }}-${{ matrix.target }}-${{ matrix.arch_x86_default }}
+            file_name=spoon-${{ matrix.api-level }}-${{ matrix.target }}-${{ matrix.arch }}
             wget  https://github.com/hhhaiai/uploadGithub/releases/download/v1.1/uploadGithubService-1.1-jar-with-dependencies.jar
             dat=$(date "+%H%M%S")
             tpn=${{ github.repository }}
