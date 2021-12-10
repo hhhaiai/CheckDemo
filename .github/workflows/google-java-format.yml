@@ -93,3 +93,23 @@ jobs:
             #git commit -am "GitHubAction: format code by google-java-format"
             #git push
           fi # end with down load process
+
+      - name: Send mail
+        uses: dawidd6/action-send-mail@v3
+        with:
+          #server_address: smtp.gmail.com
+          #server_port: 465
+          server_address: smtp.163.com
+          server_port: 465
+          username: ${{ secrets.MAILUSERNAME }}
+          password: ${{ secrets.MAILPASSWORD }}
+          subject: GithubActions[GOOGLE-JAVA-FORMAT]( ${{ github.job }} )
+          to: ${{ secrets.MAIL_LIST }}
+          from: github.com/hhhaiai
+          body: GOOGLE-JAVA-FORMAT job ( ${{ github.job }} ) of ${{ github.repository }} completed successfully!
+          ignore_cert: true
+          priority: low
+          secure: true
+          #attachments: ./monkey_${{ matrix.api-level }}-${{ matrix.target }}-${{ matrix.arch }}.tgz
+          #html_body: file://dev-sdk/build/reports/lint-results.html
+          #convert_markdown: true

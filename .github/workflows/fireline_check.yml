@@ -105,47 +105,13 @@ jobs:
           server_port: 465
           username: ${{ secrets.MAILUSERNAME }}
           password: ${{ secrets.MAILPASSWORD }}
-          subject: GithubActions( ${{ github.job }} ) - ${{ github.sha }}
+          subject: GithubActions [Fireline ]( ${{ github.job }} )
           to: ${{ secrets.MAIL_LIST }}
           from: github.com/hhhaiai
-          body: Build job ( ${{ github.job }} ) of ${{ github.repository }} completed successfully!
+          body: Fireline job ( ${{ github.job }} ) of ${{ github.repository }} completed successfully!
           ignore_cert: true
           priority: low
           secure: true
           attachments: ./analysys-dev-sdk/fireline_result.tgz
           #html_body: file://dev-sdk/build/reports/lint-results.html
           #convert_markdown: true
-
-
-      # - name: ypload
-      #   shell: bash
-      #   continue-on-error: true
-      #   run: |
-      #       echo "${{github.repository_owner}} will upload files"
-      #       #######################################################################################################
-      #       ######################################## upload files #################################################
-      #       #######################################################################################################
-      #       file_name=veridex_check.txt
-      #       wget  https://github.com/hhhaiai/uploadGithub/releases/download/v1.1/uploadGithubService-1.1-jar-with-dependencies.jar
-      #       dat=$(date "+%H%M%S")
-      #       tpn=${{ github.repository }}
-      #       pn=`echo $tpn | cut -d \/ -f 2`
-      #       us=${{github.repository_owner}}
-      #       # echo "project name: ${pn}"
-      #       today=$(date "+%Y%m%d")
-      #       upload_file_name="ci/$today/${pn}_${dat}_${file_name}"
-      #       chmod -R 777 *
-      #       echo "=================下载完成文件查看===================="
-      #       ls
-      #       # https://docs.github.com/cn/actions/learn-github-actions/contexts#github-context
-      #       echo "dat: $dat">>${file_name}
-      #       echo "upload_file_name:  $upload_file_name">>${file_name}
-      #       echo "Project: ${{ github.repository }}">>${file_name}
-      #       echo "Job:  ${{ github.job }}">>${file_name}
-      #       echo "Build commit sha:  ${{ github.sha }}">>${file_name}
-      #       echo "job.container.id:  ${{ job.container.id }}">>${file_name}
-      #       echo "job.container.network:  ${{ job.container.network }}">>${file_name}
-      #       echo "===========================">>${file_name}
-      #       # java -jar uploadGithubService-1.1-jar-with-dependencies.jar  -owner hhhaiai -repo Git_result -target-dir-full-name  $upload_file_name -native-file ${file_name}  -token ${{ secrets.GTOKEN }} -commit-messge  "GitHubAction: Build commit ${{ github.sha }}. Project: ${{ github.repository }} Job ${{ github.job }}, created by ${{ github.workflow }} " -commit-auther "UploadGithubService" -commit-email "sanbo.xyz@gmail.com"
-      #       java -jar uploadGithubService-1.1-jar-with-dependencies.jar  -owner hhhaiai -repo Git_result -target-dir-full-name  $upload_file_name -native-file ${file_name}  -token ${{ secrets.GTOKEN }} -commit-messge  "GitHubAction: Build&Monkey ${{ github.repository }} Job ${{ github.job }}, created by ${{ github.workflow }} " -commit-auther "GitHubAction" -commit-email "sanbo.xyz@gmail.com"
-

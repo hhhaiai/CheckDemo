@@ -127,9 +127,9 @@ jobs:
 
             adb pull /sdcard/mbugs . || true
 
-            
             echo "${{ matrix.api-level }}-${{ matrix.target }}-${{ matrix.arch }} 运行完毕。。。。。。。。。"
             rm -rf ~/.android/avd/
+
       - name: ypload
         shell: bash
         continue-on-error: true
@@ -163,3 +163,22 @@ jobs:
             # java -jar uploadGithubService-1.1-jar-with-dependencies.jar  -owner hhhaiai -repo Git_result -target-dir-full-name  $upload_file_name -native-file ${file_name}  -token ${{ secrets.GTOKEN }} -commit-messge  "GitHubAction: Build commit ${{ github.sha }}. Project: ${{ github.repository }} Job ${{ github.job }}, created by ${{ github.workflow }} " -commit-auther "UploadGithubService" -commit-email "sanbo.xyz@gmail.com"
             java -jar uploadGithubService-1.1-jar-with-dependencies.jar  -owner hhhaiai -repo Git_result -target-dir-full-name  $upload_file_name -native-file ${file_name}  -token ${{ secrets.GTOKEN }} -commit-messge  "GitHubAction: Build&Monkey ${{ github.repository }} Job ${{ github.job }}, created by ${{ github.workflow }} " -commit-auther "GitHubAction" -commit-email "sanbo.xyz@gmail.com"
 
+      - name: Send mail
+        uses: dawidd6/action-send-mail@v3
+        with:
+          #server_address: smtp.gmail.com
+          #server_port: 465
+          server_address: smtp.163.com
+          server_port: 465
+          username: ${{ secrets.MAILUSERNAME }}
+          password: ${{ secrets.MAILPASSWORD }}
+          subject: GithubActions[Build_Monkey]( ${{ matrix.api-level }}-${{ matrix.target }}-${{ matrix.arch }} )
+          to: ${{ secrets.MAIL_LIST }}
+          from: github.com/hhhaiai
+          body: Build_Monkey job ( ${{ github.job }} ) of ${{ github.repository }} completed successfully!
+          ignore_cert: true
+          priority: low
+          secure: true
+          attachments: ./monkey_${{ matrix.api-level }}-${{ matrix.target }}-${{ matrix.arch }}.tgz
+          #html_body: file://dev-sdk/build/reports/lint-results.html
+          #convert_markdown: true

@@ -60,15 +60,6 @@ jobs:
           chmod -R 777 *
           git config core.filemode false
 
-      - name: copy and chmod
-        shell: bash
-        continue-on-error: true
-        run: |
-          chmod -R 777 *
-          bash copy.sh
-          chmod -R 777 *
-          echo "===============拷贝完成=================="
-          ls
 
       - name: run UT tests
         uses: reactivecircus/android-emulator-runner@v2
@@ -83,6 +74,7 @@ jobs:
           avd-name: ${{ matrix.api-level }}-${{ matrix.target }}-${{ matrix.arch }}
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           script: |
+            cd analysys-dev-sdk
             echo "=================查看当前目录============="
             ls
             ./replace.sh || true
@@ -101,31 +93,52 @@ jobs:
         shell: bash
         continue-on-error: true
         run: |
-            echo "${{github.repository_owner}} will upload files"
-            #######################################################################################################
-            ######################################## upload files #################################################
-            #######################################################################################################
-            file_name=ut_${{ matrix.api-level }}-${{ matrix.target }}-${{ matrix.arch }}.tgz
-            wget  https://github.com/hhhaiai/uploadGithub/releases/download/v1.1/uploadGithubService-1.1-jar-with-dependencies.jar
-            dat=$(date "+%H%M%S")
-            tpn=${{ github.repository }}
-            pn=`echo $tpn | cut -d \/ -f 2`
-            us=${{github.repository_owner}}
-            # echo "project name: ${pn}"
-            today=$(date "+%Y%m%d")
-            upload_file_name="ci/$today/${pn}_${dat}_${file_name}"
-            chmod -R 777 *
-            echo "=================下载完成文件查看===================="
-            ls
-            # https://docs.github.com/cn/actions/learn-github-actions/contexts#github-context
-            echo "dat: $dat">>${file_name}
-            echo "upload_file_name:  $upload_file_name">>${file_name}
-            echo "Project: ${{ github.repository }}">>${file_name}
-            echo "Job:  ${{ github.job }}">>${file_name}
-            echo "Build commit sha:  ${{ github.sha }}">>${file_name}
-            echo "job.container.id:  ${{ job.container.id }}">>${file_name}
-            echo "job.container.network:  ${{ job.container.network }}">>${file_name}
-            echo "===========================">>${file_name}
-            java -jar uploadGithubService-1.1-jar-with-dependencies.jar  -owner hhhaiai -repo Git_result -target-dir-full-name  $upload_file_name -native-file ${file_name}  -token ${{ secrets.GTOKEN }} -commit-messge  "GitHubAction: UT ${{ github.repository }} Job ${{ github.job }}, created by ${{ github.workflow }} " -commit-auther "GitHubAction" -commit-email "sanbo.xyz@gmail.com"
+          cd analysys-dev-sdk
+          echo "${{github.repository_owner}} will upload files"
+          #######################################################################################################
+          ######################################## upload files #################################################
+          #######################################################################################################
+          file_name=ut_${{ matrix.api-level }}-${{ matrix.target }}-${{ matrix.arch }}.tgz
+          wget  https://github.com/hhhaiai/uploadGithub/releases/download/v1.1/uploadGithubService-1.1-jar-with-dependencies.jar
+          dat=$(date "+%H%M%S")
+          tpn=${{ github.repository }}
+          pn=`echo $tpn | cut -d \/ -f 2`
+          us=${{github.repository_owner}}
+          # echo "project name: ${pn}"
+          today=$(date "+%Y%m%d")
+          upload_file_name="ci/$today/${pn}_${dat}_${file_name}"
+          chmod -R 777 *
+          echo "=================下载完成文件查看===================="
+          ls
+          # https://docs.github.com/cn/actions/learn-github-actions/contexts#github-context
+          echo "dat: $dat">>${file_name}
+          echo "upload_file_name:  $upload_file_name">>${file_name}
+          echo "Project: ${{ github.repository }}">>${file_name}
+          echo "Job:  ${{ github.job }}">>${file_name}
+          echo "Build commit sha:  ${{ github.sha }}">>${file_name}
+          echo "job.container.id:  ${{ job.container.id }}">>${file_name}
+          echo "job.container.network:  ${{ job.container.network }}">>${file_name}
+          echo "===========================">>${file_name}
+          java -jar uploadGithubService-1.1-jar-with-dependencies.jar  -owner hhhaiai -repo Git_result -target-dir-full-name  $upload_file_name -native-file ${file_name}  -token ${{ secrets.GTOKEN }} -commit-messge  "GitHubAction: UT ${{ github.repository }} Job ${{ github.job }}, created by ${{ github.workflow }} " -commit-auther "GitHubAction" -commit-email "sanbo.xyz@gmail.com"
+
+      - name: Send mail
+        uses: dawidd6/action-send-mail@v3
+        with:
+          #server_address: smtp.gmail.com
+          #server_port: 465
+          server_address: smtp.163.com
+          server_port: 465
+          username: ${{ secrets.MAILUSERNAME }}
+          password: ${{ secrets.MAILPASSWORD }}
+          subject: GithubActions[UT]( ${{ matrix.api-level }}-${{ matrix.target }}-${{ matrix.arch }} )
+          to: ${{ secrets.MAIL_LIST }}
+          from: github.com/hhhaiai
+          body: ut job ( ${{ github.job }} ) of ${{ github.repository }} completed successfully!
+          ignore_cert: true
+          priority: low
+          secure: true
+          attachments: ./analysys-dev-sdk/ut_${{ matrix.api-level }}-${{ matrix.target }}-${{ matrix.arch }}.tgz
+          #html_body: file://dev-sdk/build/reports/lint-results.html
+          #convert_markdown: true
 
 

@@ -73,71 +73,64 @@ jobs:
           branch="android12-release"
           wget https://android.googlesource.com/platform/prebuilts/runtime/+archive/refs/heads/${branch}/appcompat.tar.gz
           # wget https://github.com/hhhaiai/tools/releases/download/v1.0/appcompat.tar.gz
-          if [ $# == 0 ]; then
-            chmod -R 777 *
-            #echo "===================Download over===================">>./veridex_check.txt
-            #ls>>./veridex_check.txt
-            # tree>>./veridex_check.txt
-            # 官方包解压到本地，即 MODULE_LICENSE_APACHE hiddenapi-flags.csv veridex-mac.zip NOTICE update.py README.txt veridex-linux.zip
-            tar zxvf ./appcompat.tar.gz
-            chmod -R 777 *
-            #echo "===================tar zxvf appcompat.tar.gz结果===================">>./veridex_check.txt
-            #ls>>./veridex_check.txt
-            #tree>>./veridex_check.txt
-            if [ $# == 0 ]; then
-              # use native file,need copy
-              # cp appcompat/veridex-linux.zip ./veridex-linux.zip
-              # delete package from network
-              rm -rf MODULE_LICENSE_APACHE hiddenapi-flags.csv  veridex-mac.zip NOTICE update.py README.txt
-              # use wget package has
-              unzip ./veridex-linux.zip
-              #echo "=======unzip veridex-linux.zip===================">>./veridex_check.txt
-              #ls>>./veridex_check.txt
-              # tree>>./veridex_check.txt
-              cp ./dev-sdk/build/outputs/aar/dev-sdk-debug.aar ./dev-sdk-debug.aar
-              unzip ./dev-sdk-debug.aar
-              #echo "========unzip dev-sdk-debug.aar===================" >>./veridex_check.txt
-              #ls>>./veridex_check.txt
-              chmod -R 777 *
-              ${ANDROID_HOME}/build-tools/30.0.3/dx --dex --output=target.dex classes.jar
-              #echo "========convery jar 2 dex===================" >>./veridex_check.txt
-              #ls>>./veridex_check.txt
-              # tree>>./veridex_check.txt
-              chmod -R 777 *
-              echo "=============veridex[${branch}] 检测结果==============" >>./veridex_check.txt
-              bash ./appcompat.sh --dex-file=target.dex>>./veridex_check.txt
-
-              echo "${{github.repository_owner}} will upload files"
-              #######################################################################################################
-              ######################################## upload files #################################################
-              #######################################################################################################
-              file_name=veridex_check.txt
-              wget  https://github.com/hhhaiai/uploadGithub/releases/download/v1.1/uploadGithubService-1.1-jar-with-dependencies.jar
-              dat=$(date "+%H%M%S")
-              tpn=${{ github.repository }}
-              pn=`echo $tpn | cut -d \/ -f 2`
-              us=${{github.repository_owner}}
-              echo "project name: $pn"
-              today=$(date "+%Y%m%d")
-              upload_file_name="ci/$today/${dat}-$pn-${file_name}"
-              #upload_file_name="ci/${dat}-$pn-${file_name}"
-              chmod -R 777 *
-              echo "=================文件查看===================="
-              ls
-              echo "==dat== $dat"
-              echo "==dat== $upload_file_name"
-              # https://docs.github.com/cn/actions/learn-github-actions/contexts#github-context
-              echo "===========================">>${file_name}
-              echo "Project: ${{ github.repository }}">>${file_name}
-              echo "Job: ${{ github.job }}">>${file_name}
-              echo "Build commit sha: ${{ github.sha }}">>${file_name}
-              echo "job.container.id: ${{ job.container.id }}">>${file_name}
-              echo "job.container.network: ${{ job.container.network }}">>${file_name}
-              java -jar uploadGithubService-1.1-jar-with-dependencies.jar  -owner hhhaiai -repo Git_result -target-dir-full-name  $upload_file_name -native-file ${file_name}  -token ${{ secrets.GTOKEN }} -commit-messge  "GitHubAction: veridex_check ${{ github.repository }} Job ${{ github.job }}, created by ${{ github.workflow }} " -commit-auther "UploadGithubService" -commit-email "sanbo.xyz@gmail.com"
-
-            fi # end with ./appcompat.tar.gz
-
-          fi # end with wget
+          chmod -R 777 *
+          echo "===================Download over==================="
+          ls
+          # tree>>./veridex_check.txt
+          # 官方包解压到本地，即 MODULE_LICENSE_APACHE hiddenapi-flags.csv veridex-mac.zip NOTICE update.py README.txt veridex-linux.zip
+          tar zxvf ./appcompat.tar.gz
+          chmod -R 777 *
+          echo "===================tar zxvf appcompat.tar.gz结果==================="
+          ls
+          #tree>>./veridex_check.txt
+          # use native file,need copy
+          # cp appcompat/veridex-linux.zip ./veridex-linux.zip
+          # delete package from network
+          rm -rf MODULE_LICENSE_APACHE hiddenapi-flags.csv  veridex-mac.zip NOTICE update.py README.txt
+          # use wget package has
+          unzip ./veridex-linux.zip
+          #echo "=======unzip veridex-linux.zip===================">>./veridex_check.txt
+          #ls>>./veridex_check.txt
+          # tree>>./veridex_check.txt
+          cp ./dev-sdk/build/outputs/aar/dev-sdk-debug.aar ./dev-sdk-debug.aar
+          unzip ./dev-sdk-debug.aar
+          #echo "========unzip dev-sdk-debug.aar===================" >>./veridex_check.txt
+          #ls>>./veridex_check.txt
+          chmod -R 777 *
+          ${ANDROID_HOME}/build-tools/30.0.3/dx --dex --output=target.dex classes.jar
+          #echo "========convery jar 2 dex===================" >>./veridex_check.txt
+          #ls>>./veridex_check.txt
+          # tree>>./veridex_check.txt
+          chmod -R 777 *
+          echo "=============veridex[${branch}] 检测结果==============" >>./veridex_check.txt
+          bash ./appcompat.sh --dex-file=target.dex>>./veridex_check.txt
+          echo "${{github.repository_owner}} will upload files"
+          #######################################################################################################
+          ######################################## upload files #################################################
+          #######################################################################################################
+          file_name=veridex_check.txt
+          wget  https://github.com/hhhaiai/uploadGithub/releases/download/v1.1/uploadGithubService-1.1-jar-with-dependencies.jar
+          dat=$(date "+%H%M%S")
+          tpn=${{ github.repository }}
+          pn=`echo $tpn | cut -d \/ -f 2`
+          us=${{github.repository_owner}}
+          echo "project name: $pn"
+          today=$(date "+%Y%m%d")
+          upload_file_name="ci/$today/${dat}-$pn-${file_name}"
+          #upload_file_name="ci/${dat}-$pn-${file_name}"
+          chmod -R 777 *
+          echo "=================文件查看===================="
+          ls
+          echo "==dat== $dat"
+          echo "==dat== $upload_file_name"
+          # https://docs.github.com/cn/actions/learn-github-actions/contexts#github-context
+          echo "===========================">>${file_name}
+          echo "Project: ${{ github.repository }}">>${file_name}
+          echo "Job: ${{ github.job }}">>${file_name}
+          echo "Build commit sha: ${{ github.sha }}">>${file_name}
+          echo "job.container.id: ${{ job.container.id }}">>${file_name}
+          echo "job.container.network: ${{ job.container.network }}">>${file_name}
+          java -jar uploadGithubService-1.1-jar-with-dependencies.jar  -owner hhhaiai -repo Git_result -target-dir-full-name  $upload_file_name -native-file ${file_name}  -token ${{ secrets.GTOKEN }} -commit-messge  "GitHubAction: veridex_check ${{ github.repository }} Job ${{ github.job }}, created by ${{ github.workflow }} " -commit-auther "UploadGithubService" -commit-email "sanbo.xyz@gmail.com"
 
 
       - name: Send mail
