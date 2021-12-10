@@ -65,7 +65,7 @@ jobs:
         continue-on-error: true
         run: |
           cd analysys-dev-sdk
-          bash ./replace.sh || true
+          bash ./replace.sh
           echo "=====================查看当前目录====================="
           ls
           echo "=====================查看变动====================="
