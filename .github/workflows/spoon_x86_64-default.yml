@@ -57,6 +57,15 @@ jobs:
           bash syncSubmodule.sh
           chmod -R 777 *
           git config core.filemode false
+          echo "=================切换目录后查看当前目录============="
+          pwd
+          ls
+          ./replace.sh ||true
+          echo "=================查看变动============="
+          git status
+          git diff
+          ./gradlew :appdemo:build || true
+          ./gradlew :dev-sdk:connectedAndroidTest||true
 
       - name: run spoon tests
         uses: reactivecircus/android-emulator-runner@v2
@@ -72,14 +81,9 @@ jobs:
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           script: |
             cd analysys-dev-sdk
-            echo "=================查看当前目录============="
+            echo "=================切换目录后查看当前目录============="
+            pwd
             ls
-            ./replace.sh ||true
-            echo "=================查看变动============="
-            git status
-            git diff
-            ./gradlew :appdemo:build || true
-            ./gradlew :dev-sdk:connectedAndroidTest||true
             export PATH=$PATH:${ANDROID_HOME}/emulator:${ANDROID_HOME}/platform-tools:${ANDROID_HOME}/tools:${ANDROID_HOME}/tools/bin:${ANDROID_HOME}/build-tools/30.0.3:${ANDROID_HOME}/build-tools/30.0.3/lld-bin:${ANDROID_HOME}/ndk/23.0.7599858
             wget https://repo1.maven.org/maven2/com/squareup/spoon/spoon-runner/1.7.1/spoon-runner-1.7.1-jar-with-dependencies.jar
             java -jar spoon-runner-1.7.1-jar-with-dependencies.jar --test-apk ./dev-sdk/build/outputs/apk/androidTest/debug/dev-sdk-debug-androidTest.apk --apk ./appdemo/build/outputs/apk/debug/appdemo-debug.apk --output ./spoon/

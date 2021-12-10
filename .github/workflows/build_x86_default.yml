@@ -100,7 +100,6 @@ jobs:
             ls
             adb install -r ./appdemo-debug.apk
             adb shell pm list package
-
             wget https://raw.githubusercontent.com/TestJken66/Fastbot_Android/main/fastbot-thirdpart.jar
             wget https://raw.githubusercontent.com/TestJken66/Fastbot_Android/main/monkeyq.jar
             wget https://raw.githubusercontent.com/TestJken66/Fastbot_Android/main/framework.jar
