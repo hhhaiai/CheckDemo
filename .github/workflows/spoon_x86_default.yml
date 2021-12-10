@@ -16,7 +16,7 @@ jobs:
       matrix:
           api-level: [ 15, 16, 17, 18, 21, 22, 23, 24, 25, 26, 27, 28, 29 ]
           target: [default]
-          arch_x86_default: [x86]
+          arch: [x86]
     steps:
       - uses: actions/checkout@v2
       - name: set up JDK 11
@@ -64,12 +64,12 @@ jobs:
         with:
           api-level: ${{ matrix.api-level }}
           target: ${{ matrix.target }}
-          arch: ${{ matrix.arch_x86_default }}
+          arch: ${{ matrix.arch }}
           profile: Nexus 6
           # cores: 4
           # ram-size: 4096M
           # sdcard-path-or-size: 1000M
-          avd-name: ${{ matrix.api-level }}-${{ matrix.target }}-${{ matrix.arch_x86_default }}
+          avd-name: ${{ matrix.api-level }}-${{ matrix.target }}-${{ matrix.arch }}
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           script: |
             cd analysys-dev-sdk
@@ -85,10 +85,10 @@ jobs:
             wget https://repo1.maven.org/maven2/com/squareup/spoon/spoon-runner/1.7.1/spoon-runner-1.7.1-jar-with-dependencies.jar
             java -jar spoon-runner-1.7.1-jar-with-dependencies.jar --test-apk ./dev-sdk/build/outputs/apk/androidTest/debug/dev-sdk-debug-androidTest.apk --apk ./appdemo/build/outputs/apk/debug/appdemo-debug.apk --output ./spoon/
             echo "==============run spoon over==============="
-            tar -zcvf  spoon-${{ matrix.api-level }}-${{ matrix.target }}-${{ matrix.arch_x86_default }}.tgz ./spoon/
+            tar -zcvf  spoon-${{ matrix.api-level }}-${{ matrix.target }}-${{ matrix.arch }}.tgz ./spoon/
             tar -zcvf ut_${{ matrix.api-level }}-${{ matrix.target }}-${{ matrix.arch }}.tgz build/ dev-sdk/build/reports/ build/reports/ || true
             echo "==============tar spoon over. ls==============="
-            echo "${{ matrix.api-level }}-${{ matrix.target }}-${{ matrix.arch_x86_default }} 运行完毕。。。。。。。。。"
+            echo "${{ matrix.api-level }}-${{ matrix.target }}-${{ matrix.arch }} 运行完毕。。。。。。。。。"
             rm -rf ~/.android/avd/
 
       - name: ypload spoon
