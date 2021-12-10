@@ -14,9 +14,9 @@ jobs:
     if: "!startsWith(github.event.head_commit.message, 'GitHubAction:')"
     strategy:
       matrix:
-          api-level: [ 15, 16, 17, 18, 21, 22, 23, 24, 25, 26, 27, 28, 29 ]
-          target: [default]
-          arch_x86_default: [x86]
+        api-level: [ 28, 29, 31 ]
+        target: [google_apis_playstore]
+        arch: [x86_64]
     steps:
       - uses: actions/checkout@v2
       - name: set up JDK 11
