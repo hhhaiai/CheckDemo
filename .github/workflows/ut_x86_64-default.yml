@@ -84,6 +84,9 @@ jobs:
             echo "=================查看当前目录============="
             ls
             ./replace.sh || true
+            echo "=====================查看变动====================="
+            git status
+            git diff
             ./gradlew connectedAndroidTest mergeAndroidReports || true
             echo "==============run case over==============="
             tar -zcvf ut_${{ matrix.api-level }}-${{ matrix.target }}-${{ matrix.arch }}.tgz build/ dev-sdk/build/reports/>t.txt || true

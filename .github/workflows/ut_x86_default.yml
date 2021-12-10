@@ -14,9 +14,9 @@ jobs:
     if: "!startsWith(github.event.head_commit.message, 'GitHubAction:')"
     strategy:
       matrix:
-          #api-level: [ 15, 16, 17, 18, 21, 22, 23, 24, 25, 26, 27, 28, 29 ]
-          # duration 1 hour
-          api-level: [ 17 ]
+          api-level: [ 15, 16, 18, 21, 22, 23, 24, 25, 26, 27, 28, 29 ]
+          # duration 1 hour ，特别慢
+          #api-level: [ 17 ]
           target: [default]
           arch: [x86]
     steps:
@@ -86,6 +86,9 @@ jobs:
             echo "=================查看当前目录============="
             ls
             ./replace.sh || true
+            echo "=====================查看变动====================="
+            git status
+            git diff
             # may failed
             ./gradlew connectedAndroidTest mergeAndroidReports || true
             echo "==============run case over===============" || true

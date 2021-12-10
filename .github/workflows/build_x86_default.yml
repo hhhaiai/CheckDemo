@@ -1,4 +1,4 @@
-name: build_x86_64-google_apis
+name: build_x86_default
 
 on:
   push:
@@ -14,9 +14,11 @@ jobs:
     if: "!startsWith(github.event.head_commit.message, 'GitHubAction:')"
     strategy:
       matrix:
-        api-level: [ 21, 22, 23, 24, 25, 26, 28, 29, 30, 31 ]
-        target: [google_apis]
-        arch: [x86_64]
+          api-level: [15, 16, 17, 18, 21, 22, 23, 24, 25, 26, 27, 28, 29 ]
+          # 15, 16, 17, 18 can't run fastmonkey
+          #api-level: [ 21, 22, 23, 24, 25, 26, 27, 28, 29 ]
+          target: [default]
+          arch: [x86]
     steps:
       - uses: actions/checkout@v2
       - name: set up JDK 11
@@ -63,7 +65,12 @@ jobs:
         continue-on-error: true
         run: |
           cd analysys-dev-sdk
-          ./replace.sh || true
+          bash ./replace.sh || true
+          echo "=====================查看当前目录====================="
+          ls
+          echo "=====================查看变动====================="
+          git status
+          git diff
           ./gradlew build
 
       - name: copy result
@@ -75,6 +82,7 @@ jobs:
           cp ./analysys-dev-sdk/casedemo/build/outputs/apk/debug/casedemo-debug.apk ./casedemo-debug.apk
           cp ./analysys-dev-sdk/appdemo/build/outputs/apk/debug/appdemo-debug.apk ./appdemo-debug.apk
           cp ./analysys-dev-sdk/updatecase/build/outputs/apk/debug/updatecase-debug.apk ./updatecase-debug.apk
+          ls -R *>./build_result_tree.txt
           echo "============拷贝完成，查看当前目录=============="
           ls
 
@@ -88,8 +96,10 @@ jobs:
           avd-name: ${{ matrix.api-level }}-${{ matrix.target }}-${{ matrix.arch }}
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           script: |
+            echo "=====================查看当前目录====================="
+            ls
             adb install -r ./appdemo-debug.apk
-            adb shell pm list package || true
+            adb shell pm list package
 
             wget https://raw.githubusercontent.com/TestJken66/Fastbot_Android/main/fastbot-thirdpart.jar
             wget https://raw.githubusercontent.com/TestJken66/Fastbot_Android/main/monkeyq.jar

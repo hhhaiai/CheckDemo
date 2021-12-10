@@ -75,6 +75,8 @@ jobs:
             echo "======================git status==================="
             echo "=================================================="
             git status
+            echo "======================git diff==================="
+            git diff
             git config --global user.name "GithubAction"
             git config --global user.email "sanbo.xyz@gmail.com"
             if [ -z "$(git status --porcelain)" ]
