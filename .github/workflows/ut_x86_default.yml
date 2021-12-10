@@ -16,7 +16,7 @@ jobs:
       matrix:
           #api-level: [ 15, 16, 17, 18, 21, 22, 23, 24, 25, 26, 27, 28, 29 ]
           # duration 1 hour
-          #api-level: [ 17 ]
+          api-level: [ 17 ]
           target: [default]
           arch: [x86]
     steps:
