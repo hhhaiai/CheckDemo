@@ -68,12 +68,16 @@ jobs:
           ls
           ./replace.sh
           ./gradlew :appdemo:build
-          
+          echo "=================编译完成查看目录============="
+          pwd
+          ls
+
+
       - name: cat
         shell: bash
         continue-on-error: true
         run: |
-          echo "=================切换目录后查看当前目录============="
+          echo "=================单纯查看目录============="
           pwd
           ls
 
@@ -91,13 +95,12 @@ jobs:
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           script: |
             ./gradlew :dev-sdk:connectedAndroidTest || true
-            echo "=================切换目录后查看当前目录============="
-            pwd
+            echo "=================查看当前目录============="
             ls
             export PATH=$PATH:${ANDROID_HOME}/emulator:${ANDROID_HOME}/platform-tools:${ANDROID_HOME}/tools:${ANDROID_HOME}/tools/bin:${ANDROID_HOME}/build-tools/30.0.3:${ANDROID_HOME}/build-tools/30.0.3/lld-bin:${ANDROID_HOME}/ndk/23.0.7599858
             java -jar spoon-runner-1.7.1-jar-with-dependencies.jar --test-apk ./dev-sdk/build/outputs/apk/androidTest/debug/dev-sdk-debug-androidTest.apk --apk ./appdemo/build/outputs/apk/debug/appdemo-debug.apk --output ./spoon/
             echo "==============run spoon over==============="
-            tar -zcvf spoon-${{ matrix.api-level }}-${{ matrix.target }}-${{ matrix.arch }}.tgz ./spoon/ || true
+            tar -zcvf  spoon-${{ matrix.api-level }}-${{ matrix.target }}-${{ matrix.arch }}.tgz ./spoon/
             tar -zcvf ut_${{ matrix.api-level }}-${{ matrix.target }}-${{ matrix.arch }}.tgz build/ dev-sdk/build/reports/ build/reports/ || true
             echo "==============tar spoon over. ls==============="
             echo "${{ matrix.api-level }}-${{ matrix.target }}-${{ matrix.arch }} 运行完毕。。。。。。。。。"
@@ -107,65 +110,65 @@ jobs:
         shell: bash
         continue-on-error: true
         run: |
-            echo "${{github.repository_owner}} will upload files"
-            #######################################################################################################
-            ######################################## upload files #################################################
-            #######################################################################################################
-            file_name=spoon-${{ matrix.api-level }}-${{ matrix.target }}-${{ matrix.arch }}.tgz
-            wget  https://github.com/hhhaiai/uploadGithub/releases/download/v1.1/uploadGithubService-1.1-jar-with-dependencies.jar
-            dat=$(date "+%H%M%S")
-            tpn=${{ github.repository }}
-            pn=`echo $tpn | cut -d \/ -f 2`
-            us=${{github.repository_owner}}
-            # echo "project name: ${pn}"
-            today=$(date "+%Y%m%d")
-            upload_file_name="ci/$today/${pn}_${dat}_${file_name}"
-            chmod -R 777 *
-            echo "=================下载完成文件查看===================="
-            ls
-            # https://docs.github.com/cn/actions/learn-github-actions/contexts#github-context
-            echo "dat: $dat">>${file_name}
-            echo "upload_file_name:  $upload_file_name">>${file_name}
-            echo "Project: ${{ github.repository }}">>${file_name}
-            echo "Job:  ${{ github.job }}">>${file_name}
-            echo "Build commit sha:  ${{ github.sha }}">>${file_name}
-            echo "job.container.id:  ${{ job.container.id }}">>${file_name}
-            echo "job.container.network:  ${{ job.container.network }}">>${file_name}
-            echo "===========================">>${file_name}
-            java -jar uploadGithubService-1.1-jar-with-dependencies.jar  -owner hhhaiai -repo Git_result -target-dir-full-name  $upload_file_name -native-file ${file_name}  -token ${{ secrets.GTOKEN }} -commit-messge  "GitHubAction: spoon ${{ github.repository }} Job ${{ github.job }}, created by ${{ github.workflow }} " -commit-auther "GitHubAction" -commit-email "sanbo.xyz@gmail.com"
-
+          echo "${{github.repository_owner}} will upload files"
+          ls
+          #######################################################################################################
+          ######################################## upload files #################################################
+          #######################################################################################################
+          file_name=spoon-${{ matrix.api-level }}-${{ matrix.target }}-${{ matrix.arch }}.tgz
+          wget  https://github.com/hhhaiai/uploadGithub/releases/download/v1.1/uploadGithubService-1.1-jar-with-dependencies.jar
+          dat=$(date "+%H%M%S")
+          tpn=${{ github.repository }}
+          pn=`echo $tpn | cut -d \/ -f 2`
+          us=${{github.repository_owner}}
+          # echo "project name: ${pn}"
+          today=$(date "+%Y%m%d")
+          upload_file_name="ci/$today/${pn}_${dat}_${file_name}"
+          chmod -R 777 *
+          echo "=================下载完成文件查看===================="
+          ls
+          # https://docs.github.com/cn/actions/learn-github-actions/contexts#github-context
+          echo "dat: $dat">>${file_name}
+          echo "upload_file_name:  $upload_file_name">>${file_name}
+          echo "Project: ${{ github.repository }}">>${file_name}
+          echo "Job:  ${{ github.job }}">>${file_name}
+          echo "Build commit sha:  ${{ github.sha }}">>${file_name}
+          echo "job.container.id:  ${{ job.container.id }}">>${file_name}
+          echo "job.container.network:  ${{ job.container.network }}">>${file_name}
+          echo "===========================">>${file_name}
+          java -jar uploadGithubService-1.1-jar-with-dependencies.jar  -owner hhhaiai -repo Git_result -target-dir-full-name  $upload_file_name -native-file ${file_name}  -token ${{ secrets.GTOKEN }} -commit-messge  "GitHubAction: spoon ${{ github.repository }} Job ${{ github.job }}, created by ${{ github.workflow }} " -commit-auther "GitHubAction" -commit-email "sanbo.xyz@gmail.com"
 
       - name: ypload ut
         shell: bash
         continue-on-error: true
         run: |
-            echo "${{github.repository_owner}} will upload files"
-            #######################################################################################################
-            ######################################## upload files #################################################
-            #######################################################################################################
-            file_name=ut_${{ matrix.api-level }}-${{ matrix.target }}-${{ matrix.arch }}.tgz
-            wget  https://github.com/hhhaiai/uploadGithub/releases/download/v1.1/uploadGithubService-1.1-jar-with-dependencies.jar
-            dat=$(date "+%H%M%S")
-            tpn=${{ github.repository }}
-            pn=`echo $tpn | cut -d \/ -f 2`
-            us=${{github.repository_owner}}
-            # echo "project name: ${pn}"
-            today=$(date "+%Y%m%d")
-            upload_file_name="ci/$today/${pn}_${dat}_${file_name}"
-            chmod -R 777 *
-            echo "=================下载完成文件查看===================="
-            ls
-            # https://docs.github.com/cn/actions/learn-github-actions/contexts#github-context
-            echo "dat: $dat">>${file_name}
-            echo "upload_file_name:  $upload_file_name">>${file_name}
-            echo "Project: ${{ github.repository }}">>${file_name}
-            echo "Job:  ${{ github.job }}">>${file_name}
-            echo "Build commit sha:  ${{ github.sha }}">>${file_name}
-            echo "job.container.id:  ${{ job.container.id }}">>${file_name}
-            echo "job.container.network:  ${{ job.container.network }}">>${file_name}
-            echo "===========================">>${file_name}
-            java -jar uploadGithubService-1.1-jar-with-dependencies.jar  -owner hhhaiai -repo Git_result -target-dir-full-name  $upload_file_name -native-file ${file_name}  -token ${{ secrets.GTOKEN }} -commit-messge  "GitHubAction: spoon ${{ github.repository }} Job ${{ github.job }}, created by ${{ github.workflow }} " -commit-auther "GitHubAction" -commit-email "sanbo.xyz@gmail.com"
-
+          echo "${{github.repository_owner}} will upload files"
+          ls
+          #######################################################################################################
+          ######################################## upload files #################################################
+          #######################################################################################################
+          file_name=ut_${{ matrix.api-level }}-${{ matrix.target }}-${{ matrix.arch }}.tgz
+          wget  https://github.com/hhhaiai/uploadGithub/releases/download/v1.1/uploadGithubService-1.1-jar-with-dependencies.jar
+          dat=$(date "+%H%M%S")
+          tpn=${{ github.repository }}
+          pn=`echo $tpn | cut -d \/ -f 2`
+          us=${{github.repository_owner}}
+          # echo "project name: ${pn}"
+          today=$(date "+%Y%m%d")
+          upload_file_name="ci/$today/${pn}_${dat}_${file_name}"
+          chmod -R 777 *
+          echo "=================下载完成文件查看===================="
+          ls
+          # https://docs.github.com/cn/actions/learn-github-actions/contexts#github-context
+          echo "dat: $dat">>${file_name}
+          echo "upload_file_name:  $upload_file_name">>${file_name}
+          echo "Project: ${{ github.repository }}">>${file_name}
+          echo "Job:  ${{ github.job }}">>${file_name}
+          echo "Build commit sha:  ${{ github.sha }}">>${file_name}
+          echo "job.container.id:  ${{ job.container.id }}">>${file_name}
+          echo "job.container.network:  ${{ job.container.network }}">>${file_name}
+          echo "===========================">>${file_name}
+          java -jar uploadGithubService-1.1-jar-with-dependencies.jar  -owner hhhaiai -repo Git_result -target-dir-full-name  $upload_file_name -native-file ${file_name}  -token ${{ secrets.GTOKEN }} -commit-messge  "GitHubAction: spoon ${{ github.repository }} Job ${{ github.job }}, created by ${{ github.workflow }} " -commit-auther "GitHubAction" -commit-email "sanbo.xyz@gmail.com"
 
       - name: Send mail
         uses: dawidd6/action-send-mail@v3
