@@ -14,7 +14,7 @@ jobs:
     if: "!startsWith(github.event.head_commit.message, 'GitHubAction:')"
     strategy:
       matrix:
-        api-level: [ 21, 22, 24, 25, 26, 28, 29, 30, 31 ]
+        api-level: [ 21, 22, 24, 25, 26, 28, 29, 30, 31, 32 ]
         # 23 lost 3hours. at: https://github.com/hhhaiai/CheckDemo/actions/runs/1562840861
         #api-level: [ 23 ]
         target: [google_apis]
