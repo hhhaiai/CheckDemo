@@ -186,6 +186,6 @@ jobs:
           ignore_cert: true
           priority: low
           secure: true
-          attachments: ./spoon-${{ matrix.api-level }}-${{ matrix.target }}-${{ matrix.arch }}.tgz, ./ut_${{ matrix.api-level }}-${{ matrix.target }}-${{ matrix.arch }}.tgz
+          attachments: ./ut_${{ matrix.api-level }}-${{ matrix.target }}-${{ matrix.arch }}.tgz, ./spoon-${{ matrix.api-level }}-${{ matrix.target }}-${{ matrix.arch }}.tgz
           #html_body: file://dev-sdk/build/reports/lint-results.html
           #convert_markdown: true
