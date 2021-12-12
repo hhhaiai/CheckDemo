@@ -16,7 +16,7 @@ jobs:
       matrix:
           #api-level: [ 15, 16, 17, 18, 21, 22, 23, 24, 25, 26, 27, 28, 29 ]
           # https://github.com/hhhaiai/CheckDemo/actions/runs/1567133550
-          api-level: [  16, 17,30,31,32 ]
+          api-level: [  16, 17,30 ]
           target: [default]
           arch: [x86]
     steps:
