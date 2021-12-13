@@ -102,7 +102,7 @@ jobs:
             java -jar spoon-runner-1.7.1-jar-with-dependencies.jar --test-apk ./dev-sdk/build/outputs/apk/androidTest/debug/dev-sdk-debug-androidTest.apk --apk ./appdemo/build/outputs/apk/debug/appdemo-debug.apk --output ./spoon/
             echo "==============run spoon over==============="
             tar -zcvf  spoon-${{ matrix.api-level }}-${{ matrix.target }}-${{ matrix.arch }}.tgz ./spoon/
-            tar -zcvf ut_${{ matrix.api-level }}-${{ matrix.target }}-${{ matrix.arch }}.tgz build/ dev-sdk/build/reports/ build/reports/ || true
+            tar -zcvf ut_${{ matrix.api-level }}-${{ matrix.target }}-${{ matrix.arch }}.tgz  dev-sdk/build/reports/ || true
             echo "==============tar spoon over. ls==============="
             echo "${{ matrix.api-level }}-${{ matrix.target }}-${{ matrix.arch }} 运行完毕。。。。。。。。。"
             rm -rf ~/.android/avd/
