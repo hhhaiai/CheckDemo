@@ -14,11 +14,10 @@ jobs:
     if: "!startsWith(github.event.head_commit.message, 'GitHubAction:')"
     strategy:
       matrix:
-          #api-level: [ 15, 16, 17, 18, 21, 22, 23, 24, 25, 26, 27, 28, 29 ]
-          # 30 failed
-          api-level: [  16, 17 ]
-          target: [default]
-          arch: [x86]
+        # 17 man 30 failed 
+        api-level: [ 15, 16, 18, 21, 22, 23, 24, 25, 26, 27, 28, 29 ]
+        target: [default]
+        arch: [x86]
     steps:
       - uses: actions/checkout@v2
       - name: set up JDK 11
