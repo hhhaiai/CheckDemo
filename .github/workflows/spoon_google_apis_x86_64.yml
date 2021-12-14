@@ -71,6 +71,8 @@ jobs:
           echo "=================编译完成查看目录============="
           pwd
           ls
+          brew install coreutils
+
 
 
       - name: cat
@@ -94,11 +96,11 @@ jobs:
           avd-name: ${{ matrix.api-level }}-${{ matrix.target }}-${{ matrix.arch }}
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           script: |
-            ./gradlew :dev-sdk:connectedAndroidTest || true
+            gtimeout 30m ./gradlew :dev-sdk:connectedAndroidTest || true
             echo "=================查看当前目录============="
             ls
             export PATH=$PATH:${ANDROID_HOME}/emulator:${ANDROID_HOME}/platform-tools:${ANDROID_HOME}/tools:${ANDROID_HOME}/tools/bin:${ANDROID_HOME}/build-tools/30.0.3:${ANDROID_HOME}/build-tools/30.0.3/lld-bin:${ANDROID_HOME}/ndk/23.0.7599858
-            java -jar spoon-runner-1.7.1-jar-with-dependencies.jar --test-apk ./dev-sdk/build/outputs/apk/androidTest/debug/dev-sdk-debug-androidTest.apk --apk ./appdemo/build/outputs/apk/debug/appdemo-debug.apk --output ./spoon/
+            gtimeout 30m java -jar spoon-runner-1.7.1-jar-with-dependencies.jar --test-apk ./dev-sdk/build/outputs/apk/androidTest/debug/dev-sdk-debug-androidTest.apk --apk ./appdemo/build/outputs/apk/debug/appdemo-debug.apk --output ./spoon/
             echo "==============run spoon over==============="
             tar -zcvf  spoon-${{ matrix.api-level }}-${{ matrix.target }}-${{ matrix.arch }}.tgz ./spoon/
             tar -zcvf ut_${{ matrix.api-level }}-${{ matrix.target }}-${{ matrix.arch }}.tgz dev-sdk/build/reports/ || true

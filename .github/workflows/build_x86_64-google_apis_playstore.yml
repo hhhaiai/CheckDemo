@@ -56,6 +56,7 @@ jobs:
           bash syncSubmodule.sh
           chmod -R 777 *
           git config core.filemode false
+          brew install coreutils
 
       - name: build analysys-dev-sdk
         shell: bash
@@ -116,7 +117,7 @@ jobs:
             # cn.analysys.casedemo
             # adb shell CLASSPATH=/sdcard/monkeyq.jar:/sdcard/framework.jar:/sdcard/fastbot-thirdpart.jar exec app_process /system/bin com.android.commands.monkey.Monkey -p cn.analysys.casedemo --agent reuseq --bugreport --output-directory /sdcard/mbugs --running-minutes 3 --throttle 500 -v -v || true
             #com.device
-            adb shell CLASSPATH=/sdcard/monkeyq.jar:/sdcard/framework.jar:/sdcard/fastbot-thirdpart.jar exec app_process /system/bin com.android.commands.monkey.Monkey -p com.device --agent reuseq --bugreport --output-directory /sdcard/mbugs --running-minutes 3 --throttle 500 -v -v || true
+            gtimeout 1h adb shell CLASSPATH=/sdcard/monkeyq.jar:/sdcard/framework.jar:/sdcard/fastbot-thirdpart.jar exec app_process /system/bin com.android.commands.monkey.Monkey -p com.device --agent reuseq --bugreport --output-directory /sdcard/mbugs --running-minutes 3 --throttle 500 -v -v || true
             
             echo "。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。"
             echo "。。。。。。。。。。。。。。。。。。运行完毕了。。。。。。。。。。。。。。。。。。。"
