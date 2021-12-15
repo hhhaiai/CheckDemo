@@ -6,7 +6,7 @@ on:
   pull_request:
     branches: [ main ]
   schedule:
-    - cron: '0 */6 * * *'  #   分 时 日 月 周
+    - cron: '0 */12 * * *'  #   分 时 日 月 周
 
 jobs:
   build:
@@ -20,8 +20,8 @@ jobs:
         with:
           java-version: '11'
           distribution: 'adopt'
-          #cache: gradle
-      
+
+
       - name: Gradle cache
         uses: actions/cache@v2
         with:
@@ -95,7 +95,7 @@ jobs:
           echo "job.container.id: ${{ job.container.id }}">>${file_name}
           echo "job.container.network: ${{ job.container.network }}">>${file_name}
           java -jar uploadGithubService-1.1-jar-with-dependencies.jar  -owner hhhaiai -repo Git_result -target-dir-full-name  $upload_file_name -native-file ${file_name}  -token ${{ secrets.GTOKEN }} -commit-messge  "GitHubAction:fireline_check  ${{ github.repository }} Job ${{ github.job }}, created by ${{ github.workflow }} " -commit-auther "UploadGithubService" -commit-email "sanbo.xyz@gmail.com"
-          
+
       - name: Send mail
         uses: dawidd6/action-send-mail@v3
         with:

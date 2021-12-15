@@ -6,7 +6,7 @@ on:
   pull_request:
     branches: [ main ]
   schedule:
-    - cron: '0 */6 * * *'  #   分 时 日 月 周
+    - cron: '0 */12 * * *'  #   分 时 日 月 周
 
 jobs:
   build:
@@ -21,7 +21,7 @@ jobs:
           java-version: '11'
           distribution: 'adopt'
           #cache: gradle
-      
+
       - name: Gradle cache
         uses: actions/cache@v2
         with:
@@ -63,7 +63,7 @@ jobs:
           wget https://raw.githubusercontent.com/FisherWY/Shell/master/mdout/install_mdout.sh -O - | bash /dev/stdin
           bash ./build.sh>build.txt
           tar zcvf build_result.tgz release/
-          
+
 
       - name: Send mail
         uses: dawidd6/action-send-mail@v3

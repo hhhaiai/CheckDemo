@@ -6,7 +6,7 @@ on:
   pull_request:
     branches: [ main ]
   schedule:
-    - cron: '0 */6 * * *'  #   分 时 日 月 周
+    - cron: '0 */12 * * *'  #   分 时 日 月 周
 
 jobs:
   build:
@@ -27,7 +27,7 @@ jobs:
           java-version: '11'
           distribution: 'adopt'
           #cache: gradle
-      
+
       - name: Gradle cache
         uses: actions/cache@v2
         with:
@@ -120,7 +120,7 @@ jobs:
             # adb shell CLASSPATH=/sdcard/monkeyq.jar:/sdcard/framework.jar:/sdcard/fastbot-thirdpart.jar exec app_process /system/bin com.android.commands.monkey.Monkey -p cn.analysys.casedemo --agent reuseq --bugreport --output-directory /sdcard/mbugs --running-minutes 3 --throttle 500 -v -v || true
             #com.device
             gtimeout 1h adb shell CLASSPATH=/sdcard/monkeyq.jar:/sdcard/framework.jar:/sdcard/fastbot-thirdpart.jar exec app_process /system/bin com.android.commands.monkey.Monkey -p com.device --agent reuseq --bugreport --output-directory /sdcard/mbugs --running-minutes 3 --throttle 500 -v -v || true
-            
+
             echo "。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。"
             echo "。。。。。。。。。。。。。。。。。。运行完毕了。。。。。。。。。。。。。。。。。。。"
             echo "。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。"

@@ -6,7 +6,7 @@ on:
   pull_request:
     branches: [ main ]
   schedule:
-    - cron: '0 */6 * * *'  #   分 时 日 月 周
+    - cron: '0 */12 * * *'  #   分 时 日 月 周
 
 jobs:
   build:
@@ -25,7 +25,7 @@ jobs:
           java-version: '11'
           distribution: 'adopt'
           #cache: gradle
-      
+
       - name: Gradle cache
         uses: actions/cache@v2
         with:
@@ -72,8 +72,6 @@ jobs:
           pwd
           ls
           brew install coreutils
-
-
 
       - name: cat
         shell: bash
