@@ -56,7 +56,6 @@ jobs:
           echo "===========into analysys-dev-sdk===================="
           ls
           git checkout dev
-          bash syncSubmodule.sh
           chmod -R 777 *
           git config core.filemode false
           brew install coreutils
@@ -80,9 +79,7 @@ jobs:
         run: |
           cp ./analysys-dev-sdk/dev-sdk/build/outputs/aar/dev-sdk-debug.aar ./dev-sdk-debug.aar
           cp ./analysys-dev-sdk/dev-sdk/build/outputs/aar/dev-sdk-release.aar ./dev-sdk-release.aar
-          cp ./analysys-dev-sdk/casedemo/build/outputs/apk/debug/casedemo-debug.apk ./casedemo-debug.apk
           cp ./analysys-dev-sdk/appdemo/build/outputs/apk/debug/appdemo-debug.apk ./appdemo-debug.apk
-          cp ./analysys-dev-sdk/updatecase/build/outputs/apk/debug/updatecase-debug.apk ./updatecase-debug.apk
           echo "============拷贝完成，查看当前目录=============="
           ls
 

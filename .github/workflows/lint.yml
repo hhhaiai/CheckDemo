@@ -50,11 +50,10 @@ jobs:
           echo "===========into analysys-dev-sdk===================="
           ls
           git checkout dev
-          bash syncSubmodule.sh
           chmod -R 777 *
           git config core.filemode false
 
-      - name: lint 
+      - name: lint
         shell: bash
         continue-on-error: true
         run: |

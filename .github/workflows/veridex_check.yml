@@ -50,7 +50,6 @@ jobs:
           echo "===========into analysys-dev-sdk===================="
           ls
           git checkout dev
-          bash syncSubmodule.sh
           chmod -R 777 *
           git config core.filemode false
           sudo apt-get -y install unzip
