@@ -59,7 +59,8 @@ jobs:
         run: |
           cd analysys-dev-sdk
           bash ./replace.sh ||true
-          ./gradlew lint
+          ./gradlew build || true
+          ./gradlew lint || true
           #ls -R dev-sdk/build/>./lint_tree.txt
           echo "${{github.repository_owner}} will upload files"
           #######################################################################################################
